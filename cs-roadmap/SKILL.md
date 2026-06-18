@@ -25,6 +25,8 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 
 **规划原则**：roadmap 不是"任务列表"，而是一次可执行路线设计。动笔前要先把目标、约束、风险、依赖、可验证完成信号想清楚；拆出来的每条子 feature 都要能独立验证；整份 roadmap 交给用户前必须先做一次自我批判，修掉含糊验收、错误依赖和被打包过大的条目。
 
+**推进原则**：一个长期软件任务能不能稳步推进，取决于有没有把"当前状态 → 下一步 → 验证 → 修复 → 记录"闭环设计清楚。roadmap 阶段要提前识别基线是否可能已坏、哪些条目承担 safety net / polish / harden、哪些产物必须落盘、哪些经验要回写到 CodeStable 知识层。没有这些，后续 feature 只是顺序执行，不是可恢复、可审计的推进。
+
 > 共享路径与命名约定看 `.codestable/reference/shared-conventions.md`。主文档和 items 完整模板看同目录 `reference.md`。
 
 ---
@@ -83,6 +85,7 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 **按情况读**：
 - 相关 compound 沉淀：`python .codestable/tools/search-yaml.py --dir .codestable/compound --query "{大需求关键词}"`
 - 已有相关 feature 方案
+- 项目可用验证命令 / 已知基线：从 `.codestable/attention.md`、架构 doc、历史 acceptance、README / package scripts / CI 配置里找 build / typecheck / lint / test / e2e / 浏览器验证入口。roadmap 不直接跑完整命令，但要知道后续每条 feature 靠什么验证
 
 **update 额外**：当前主文档全文 + items.yaml 当前状态 + 已启动 / 完成的子 feature 的 design / acceptance。
 
@@ -96,6 +99,9 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 - **Top 3 风险与缓解**：最可能翻车 / 最难回滚 / 最容易漏到上线后才发现的三件事，各自写清本 roadmap 怎么降低风险
 - **非显然依赖**：外部系统、数据迁移、现有模块约束、用户拍板项，哪些会卡住后续 feature
 - **关键假设**：不是用户原话、但本次规划依赖它成立的判断；review 时让用户能精确反驳
+- **基线与验证入口**：后续 feature 应优先使用哪些命令 / 手工验证入口；如果当前仓库很可能缺测试或基线不稳，要在拆解里安排 safety net / characterization 条目
+- **交付物落点**：每条子 feature 完成后应该真实落在哪些代码 / 配置 / 文档 / roadmap 状态里，避免只在汇报里说完成
+- **知识回写点**：哪些约定、环境坑、跨 feature 规则如果被验证成立，应在 acceptance 收尾时沉淀到 attention / learning / decide / guide
 
 **拆解纪律**：
 
@@ -110,6 +116,8 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 8. **最后要有收口 / 硬化意识**——UI、全栈、权限、安全、迁移类大需求，如果前面条目只覆盖功能上线，要补一条收口型子 feature 或在最后一条里明确覆盖：错误态、空态、边界输入、安全、性能、回归扫尾、文档归并
 9. **条目数量由任务形态决定**——不要为了凑固定数量合并 / 拆散。能独立验证、交付一件 coherent thing 就是一条；名字里需要写"和 / 以及"通常说明塞了两条
 10. **验收词要可证伪**——每条子 feature 的描述和 notes 里不写"完善 / 优化 / 打通"这类空词，改成"输入 A 时得到 B"、"页面 X 展示 Y"、"命令 Z 通过"
+11. **需要安全网时先建安全网**——brownfield 重构、迁移、核心路径改动、历史测试薄弱时，第一条或前几条应先补 characterization / baseline tests / 观测手段，再改行为
+12. **每条都要能断点续跑**——items.yaml 的 `status` / `feature` 是恢复锚点。条目 notes 里写清阻塞项、跳过原因、外部依赖，不靠对话记忆
 
 ### Phase 4：自查清单
 
@@ -129,6 +137,9 @@ review 前自跑一遍汇报处理：
 12. **条目原子性自查**：有没有一条实际包含两个可独立验收的交付？名字或描述里出现"和 / 以及 / 同时"时重点复查
 13. **最弱依赖自查**：哪条失败会拖垮最多后续条目？它的前置验证和风险缓解是否足够早？
 14. **收口覆盖自查**：是否覆盖 polish / harden / regression sweep？如果没有，写清为什么本 roadmap 不需要
+15. **基线自查**：是否知道后续 feature 的验证入口？当前基线不稳 / 测试薄弱时是否安排了 safety net？
+16. **交付物自查**：每条做完后是否能从仓库事实看到产物，而不是只从汇报看到？
+17. **知识回写自查**：哪些规则或坑会影响后续 feature？是否放进观察项，等 acceptance 验证后触发对应沉淀流程？
 
 ### Phase 5：用户 review
 
@@ -197,6 +208,9 @@ feature-design 发现接口契约不合理 / 漏了 / 描述不准 → **回 `cs
 - [ ] Top 3 风险、非显然依赖、关键假设已写入主文档或 review 摘要
 - [ ] 每条子 feature 都有可独立验证的完成信号 / 证据类型
 - [ ] 已做可证伪性 / 条目原子性 / 最弱依赖 / 收口覆盖自查并汇报
+- [ ] 已识别验证入口 / 基线风险；必要时拆出 safety net 条目
+- [ ] 每条子 feature 的交付物能被后续 acceptance 从仓库事实核验
+- [ ] 需要后续沉淀的 convention / learning / guide / attention 候选已写入观察项
 - [ ] items.yaml 通过 `validate-yaml.py` 校验
 - [ ] Phase 4 自查清单逐条跑过并汇报
 - [ ] 用户 review 通过

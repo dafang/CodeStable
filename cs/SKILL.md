@@ -79,6 +79,7 @@ CodeStable 把开发活动建模成 **7 个实体 + 3 个流程**，所有产物
 | 补 / 更新需求文档 | `cs-req` |
 | 补 / 更新 / 检查架构文档 / "刷新架构 doc" / "做架构体检" | `cs-arch` |
 | 大需求拆解 / "我想要一个 X 系统" / 排期规划 / 模块拆分 + 接口契约 | `cs-roadmap` |
+| 推进已有 roadmap / 执行整个 roadmap / "继续 roadmap" / "用 goal 稳步推进 roadmap" | `cs-roadmap-impl-goal` |
 | 技术选型 / 长期约束 / 编码规约 | `cs-decide` |
 | 踩坑回顾 / 经验总结 / "值得记下来" | `cs-learn` |
 | 可复用编程模式 / 库用法 / "以后做 X 就该这样" | `cs-trick` |

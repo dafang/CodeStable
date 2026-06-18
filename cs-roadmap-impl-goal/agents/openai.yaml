@@ -1,0 +1,4 @@
+interface:
+  display_name: "CodeStable Roadmap Goal"
+  short_description: "Roadmap-to-goal CodeStable execution"
+  default_prompt: "Use $cs-roadmap-impl-goal to turn this large request into a CodeStable roadmap, feature designs, and a ready-to-paste goal command."

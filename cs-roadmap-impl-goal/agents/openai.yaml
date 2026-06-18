@@ -1,4 +1,4 @@
 interface:
   display_name: "CodeStable Roadmap Goal"
-  short_description: "Roadmap-to-goal CodeStable execution"
-  default_prompt: "Use $cs-roadmap-impl-goal to turn this large request into a CodeStable roadmap, feature designs, and a ready-to-paste goal command."
+  short_description: "把大需求编排成 roadmap goal"
+  default_prompt: "使用 $cs-roadmap-impl-goal 把这个大需求沉淀成 CodeStable roadmap、全部 feature design，并输出可直接粘贴的 goal 指令。"

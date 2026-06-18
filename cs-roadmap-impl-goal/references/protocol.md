@@ -1,208 +1,235 @@
-# CodeStable Roadmap Goal Protocol
+# CodeStable Roadmap Goal 执行协议
 
-This file is copied into `.codestable/roadmap-goals/{slug}/protocol.md` and read by the `/goal` session. It is the operating manual for executing one approved CodeStable roadmap package.
+本文件复制到 `.codestable/roadmap/{slug}/goal-protocol.md` 后，由 `/goal` 会话读取。它描述如何按一个已确认的 roadmap 执行包，逐个完成 feature 的实现与验收。
 
-## State Files
+## 先读文件
 
-Read first:
+进入 goal 会话后先读取：
 
-- `goal-state.yaml`
-- `goal-plan.md`
-- `features/*.md` in the order listed by `goal-state.yaml`
-- the referenced roadmap doc and items.yaml
+- `.codestable/roadmap/{slug}/goal-state.yaml`
+- `.codestable/roadmap/{slug}/goal-plan.md`
+- `.codestable/roadmap/{slug}/{slug}-roadmap.md`
+- `.codestable/roadmap/{slug}/{slug}-items.yaml`
+- `.codestable/roadmap/{slug}/goal-features/*.md`
 
-`goal-state.yaml` must contain:
+`goal-state.yaml` 是断点恢复唯一依据。每个 feature 边界都要更新它。
 
-```yaml
-roadmap: "{slug}"
-status: ready-to-dispatch  # ready-to-dispatch | in-progress | blocked | complete
-baseline_ref: "{git rev-parse HEAD or no-git}"
-current_feature: 1
-features:
-  - slug: "{feature-slug}"
-    feature_dir: ".codestable/features/YYYY-MM-DD-{feature-slug}"
-    design: ".codestable/features/YYYY-MM-DD-{feature-slug}/{feature-slug}-design.md"
-    checklist: ".codestable/features/YYYY-MM-DD-{feature-slug}/{feature-slug}-checklist.yaml"
-    status: pending        # pending | implementing | accepted | blocked
-```
+---
 
-Update this file after every feature boundary.
+## 启动标记
 
-## Start
-
-Print:
+打印：
 
 ```text
 CS_ROADMAP_GOAL_START
 Roadmap: <slug>
-Features: <count>
+Features: <数量>
 Baseline ref: <sha|no-git>
-Plan: <goal-plan.md path>
-Protocol: <protocol.md path>
+Plan: .codestable/roadmap/<slug>/goal-plan.md
+Protocol: .codestable/roadmap/<slug>/goal-protocol.md
 ```
 
-Run preflight before changing code:
+然后做预检：
 
-1. Union mandatory commands from every feature spec.
-2. Run each once if cost is reasonable.
-3. Record green/red in state and transcript.
-4. If a command is red, classify as pre-existing, blocking, or unknown. Blocking/unknown requires user decision or a first safety-net fix if the roadmap explicitly includes one.
+1. 汇总所有 goal-features 中的必跑命令。
+2. 成本可接受时先跑一遍。
+3. 记录每条命令 green / red。
+4. red 时判断：既有问题 / 阻塞问题 / 无法归因。
+5. 阻塞或无法归因时不要盲目继续；如果 roadmap 明确有 safety net feature，则先执行对应 feature，否则交还用户。
 
-## Feature Loop
+---
 
-For each feature in state order:
+## Feature 循环
 
-1. Read the feature spec, design doc, checklist, roadmap item, and current code context.
-2. Mark the feature `implementing`.
-3. Print:
+按 `goal-state.yaml` 的 features 顺序循环。
 
-   ```text
-   CS_ROADMAP_GOAL_FEATURE_START
-   Feature: <N>/<total> <slug>
-   Design: <path>
-   Checklist: <path>
-   Depends on: <list|none>
-   Mandatory commands: <list>
-   Evidence required: <list>
-   ```
+### 1. 进入 feature
 
-4. Run the `cs-feat-impl` workflow for this feature:
-   - perform baseline precheck for relevant commands
-   - execute checklist steps in order
-   - update checklist step status immediately
-   - collect step evidence
-   - run step cleanliness checks
-   - use the three-attempt failure recovery below for failed criteria
-5. Run the `cs-feat-accept` workflow for this feature:
-   - fill acceptance report
-   - update checks to `passed`
-   - update architecture / requirement / roadmap as required
-   - run final feature audit against the original design/checklist
-6. Print:
+读取：
 
-   ```text
-   CS_ROADMAP_GOAL_FEATURE_VERIFY
-   Feature: <slug>
-   Implementation: pass|fail
-   Acceptance: pass|fail
-   Commands: <summary with exit codes>
-   Deliverables: <present|missing summary>
-   Cleanliness: <pass|fail summary>
-   Roadmap item: <done|not-done>
-   Knowledge candidates: <summary|none>
-   ```
+- goal-features/{feature-slug}.md
+- feature design
+- feature checklist
+- roadmap item
+- 当前代码上下文
 
-7. If pass, mark feature `accepted`, update `goal-state.yaml`, and print:
+把当前 feature 状态改为 `implementing`，然后打印：
 
-   ```text
-   CS_ROADMAP_GOAL_FEATURE_DONE
-   Feature <slug> accepted. State updated.
-   ```
+```text
+CS_ROADMAP_GOAL_FEATURE_START
+Feature: <N>/<总数> <slug>
+Design: <路径>
+Checklist: <路径>
+Depends on: <依赖|none>
+Mandatory commands: <命令列表>
+Evidence required: <证据列表>
+```
 
-8. If the user has sent a new message, pause at the feature boundary and ask whether to resume, revise future feature specs, or stop.
+### 2. 执行 cs-feat-impl
 
-## Failure Recovery
+按 `cs-feat-impl` 规则执行：
 
-Apply this to implementation criteria, acceptance checks, mandatory commands, deliverables, and cleanliness failures.
+- 做基线预检。
+- 按 checklist steps 顺序执行。
+- 每步完成立刻更新 checklist 状态。
+- 每步留下证据：命令 / 手工 / 浏览器 / API / diff。
+- 每步做清洁度检查。
+- 失败时走本文“失败恢复”。
 
-### First failure: diagnose and retry
+### 3. 执行 cs-feat-accept
 
-Print:
+按 `cs-feat-accept` 规则执行：
+
+- 填 acceptance 报告。
+- 把 checklist checks 更新为 `passed`。
+- 按 design 第 4 节更新 architecture。
+- 按 requirement 字段回写 requirement。
+- 按 roadmap / roadmap_item 回写 items.yaml 和 roadmap 主文档。
+- 做 feature 级最终审计。
+
+### 4. Feature 验证标记
+
+打印：
+
+```text
+CS_ROADMAP_GOAL_FEATURE_VERIFY
+Feature: <slug>
+Implementation: pass|fail
+Acceptance: pass|fail
+Commands: <命令退出码摘要>
+Deliverables: <present|missing 摘要>
+Cleanliness: pass|fail
+Roadmap item: done|not-done
+Knowledge candidates: <候选|none>
+```
+
+全部通过后：
+
+1. 把 goal-state 当前 feature 状态改为 `accepted`。
+2. 把 current_feature 指向下一条。
+3. 打印：
+
+```text
+CS_ROADMAP_GOAL_FEATURE_DONE
+Feature <slug> accepted. State updated.
+```
+
+如果用户中途发新消息，在 feature 边界停下，询问是继续、修改后续 feature specs，还是停止。
+
+---
+
+## 失败恢复
+
+适用于实现标准、验收 checks、必跑命令、交付物、清洁度。
+
+### 第一次失败：诊断并重试
+
+打印：
 
 ```text
 CS_ROADMAP_GOAL_FAILURE_DIAGNOSE
 Feature: <slug>
-Failed item: <criterion/check/command>
-Tried: <summary>
-Hypothesis: <root cause>
+Failed item: <失败项>
+Tried: <已尝试>
+Hypothesis: <根因假设>
 Next: retry same item once
 ```
 
-Retry only the failing item. Do not advance.
+只重试失败项，不推进下一步。
 
-### Second failure: focused repair note
+### 第二次失败：窄范围修复说明
 
-Write `.codestable/roadmap-goals/{slug}/features/{feature-slug}-repair.md`:
+写：
 
-- failed item
-- root cause
-- allowed files / docs to change
-- verification commands
-- explicit no-scope-creep note
+```text
+.codestable/roadmap/{slug}/goal-features/{feature-slug}-repair.md
+```
 
-Execute only that repair, then re-run the original check.
+内容包含：
 
-### Third failure: handoff
+- 失败项
+- 根因
+- 允许修改的文件 / 文档
+- 必跑验证
+- 禁止扩大范围
 
-Print:
+执行这份修复说明，然后回到原检查项重验。
+
+### 第三次失败：交还用户
+
+打印：
 
 ```text
 CS_ROADMAP_GOAL_HANDOFF
 Feature: <slug>
-Failed item: <item>
-Attempts: <three summaries>
-Suggested next move: <one line>
+Failed item: <失败项>
+Attempts: <三次尝试摘要>
+Suggested next move: <建议>
 State: blocked
 ```
 
-Update `goal-state.yaml` to `blocked` and stop. Do not print completion.
+把 goal-state 改为 `blocked`，停止。不要打印完成。
 
-## Cleanliness Checks
+---
 
-For each feature, inspect the complete working tree since `baseline_ref` when available, otherwise inspect current diff:
+## 清洁度检查
 
-- added debug output (`console.log`, `print`, `fmt.Println`, temporary logger)
-- added temporary `TODO` / `FIXME` / `XXX`
-- commented-out code
-- unused imports
-- files changed outside the feature scope
+每个 feature 都检查完整工作区（有 baseline_ref 就看相对 baseline 的变化，否则看当前 diff）：
 
-Any unexplained hit is a failed check. If the feature intentionally ships logging/debug behavior, the design or feature spec must declare the exception.
+- 新增调试输出：`console.log` / `print` / `fmt.Println` / 临时 logger
+- 新增临时 `TODO` / `FIXME` / `XXX`
+- 注释掉的代码
+- 未使用 import
+- 超出本 feature 范围的文件改动
 
-## Knowledge Writeback
+未解释命中 = 验证失败。确实是功能本身需要的日志 / debug 能力，必须在 design 或 goal-feature spec 中写明例外范围。
 
-After each accepted feature, list candidates but do not silently write them:
+---
 
-- environment / command facts likely needed by every future feature → `cs-note`
-- reusable pitfalls or debugging patterns → `cs-learn`
-- stable conventions / architectural decisions → `cs-decide`
-- user/developer guide changes → `cs-guide`
-- public API / command / component references → `cs-libdoc`
+## 知识回写候选
 
-Acceptance may write required architecture/requirement/roadmap docs directly because those are part of the workflow. Other knowledge writes require user confirmation unless the active goal explicitly granted permission.
+每个 feature accept 后，列出但不要擅自写入：
 
-## Final Roadmap Audit
+- 环境 / 命令 / 工作流事实 → `cs-note`
+- 可复用坑点 / 调试经验 → `cs-learn`
+- 稳定 convention / 架构决定 → `cs-decide`
+- 用户或开发指南变化 → `cs-guide`
+- 公开 API / 组件 / 命令参考变化 → `cs-libdoc`
 
-After the last feature is accepted, do not print completion yet.
+architecture / requirement / roadmap 回写是 acceptance 必做动作，不需要额外征求；其他知识沉淀按用户确认执行。
 
-Print:
+---
+
+## 最终 Roadmap 审计
+
+最后一个 feature accepted 后，不能直接完成。先打印：
 
 ```text
 CS_ROADMAP_GOAL_AUDIT_START
 Roadmap: <slug>
-Features to verify: <count>
-Commands to re-run: <deduplicated list>
+Features to verify: <数量>
+Commands to re-run: <去重命令列表>
 ```
 
-Audit steps:
+审计步骤：
 
-1. Re-read roadmap doc and items.yaml.
-2. Verify every item is `done` or explicitly `dropped` with reason.
-3. Re-read every feature design/checklist/acceptance report.
-4. Re-run deduplicated mandatory commands once where practical.
-5. Verify deliverables from repository facts: files, config keys, schema changes, routes, docs, roadmap state.
-6. Check complete working tree: tracked, staged, unstaged, and untracked files.
-7. Check cleanliness across the run.
-8. Count `re-verified` vs `trust-prior-verify` items; mark screenshots/manual checks as trust-prior unless re-run.
-9. Verify architecture / requirement / roadmap writebacks are present.
-10. Verify knowledge candidates are either handled, explicitly deferred, or listed for user decision.
+1. 重读 roadmap 主文档和 items.yaml。
+2. 确认每个 item 都是 `done`，或有理由 `dropped`。
+3. 重读每个 feature 的 design / checklist / acceptance。
+4. 去重重跑必跑命令（成本过高时说明跳过原因）。
+5. 从仓库事实核验交付物：文件、配置 key、schema、路由、文档、roadmap 状态。
+6. 检查完整工作区：tracked / staged / unstaged / untracked。
+7. 检查全 run 清洁度。
+8. 统计 `re-verified` 和 `trust-prior-verify`；截图 / 手工项不能重跑时记为 trust-prior。
+9. 确认 architecture / requirement / roadmap 回写存在。
+10. 确认知识候选已处理、明确延后或列给用户。
 
-Print:
+打印：
 
 ```text
 CS_ROADMAP_GOAL_AUDIT_VERIFY
 Roadmap items: <done>/<total>
-Commands: <summary>
+Commands: <摘要>
 Deliverables: <present>/<total> present
 Cleanliness: pass|fail
 Writebacks: pass|fail
@@ -210,25 +237,30 @@ Knowledge exits: handled|deferred|none
 Coverage: <re-verified> re-verified / <trust-prior> trust-prior
 ```
 
-If gaps are found, write `.codestable/roadmap-goals/{slug}/audit-repair-<round>.md`, repair only the failing audit items, and rerun the audit. After three failed audit rounds, print `CS_ROADMAP_GOAL_HANDOFF`, mark state `blocked`, and stop.
+如果有缺口：
 
-If clean, mark state `complete` and print:
+1. 写 `.codestable/roadmap/{slug}/audit-repair-<round>.md`。
+2. 只修审计失败项，不扩大范围。
+3. 重跑审计。
+4. 三轮仍失败则打印 `CS_ROADMAP_GOAL_HANDOFF`，把 state 改为 `blocked`，停止。
+
+如果无缺口：
 
 ```text
 CS_ROADMAP_GOAL_AUDIT_COMPLETE
 Roadmap: <slug>
-Audit rounds: <count>
+Audit rounds: <轮数>
 Coverage: <re-verified> re-verified / <trust-prior> trust-prior
 ```
 
-Then print:
+然后打印：
 
 ```text
 CS_ROADMAP_GOAL_COMPLETE
 Roadmap <slug> complete.
-Features accepted: <count>
+Features accepted: <数量>
 Final audit passed.
-Manual follow-up: <items|none>
+Manual follow-up: <事项|none>
 ```
 
-Only `CS_ROADMAP_GOAL_COMPLETE` satisfies the `/goal` condition.
+只有 `CS_ROADMAP_GOAL_COMPLETE` 出现，`/goal` 才算满足。

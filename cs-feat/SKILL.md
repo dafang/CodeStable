@@ -1,6 +1,6 @@
 ---
 name: cs-feat
-description: 新功能开发的子流程入口，把"加个 X 能力"从想法走到验收闭环。触发：用户说"做新功能"、"加个 X"、"实现 XX"。只做路由，根据已有产物决定走 brainstorm / design / fastforward / implement / review / QA / acceptance。不处理 bug。
+description: 新功能开发的子流程入口，把"加个 X 能力"从想法走到验收闭环。触发：用户说"做新功能"、"加个 X"、"实现 XX"。只做路由，根据已有产物决定走 brainstorm / design / design-review / fastforward / implement / code-review / QA / acceptance。不处理 bug。
 ---
 
 # cs-feat
@@ -28,6 +28,7 @@ brainstorm 是讨论层独立入口，会分诊：case 1（清楚 → 直接 des
 ├── {slug}-brainstorm.md       ← 阶段 0 产物（仅 case 2 落盘）
 ├── {slug}-intent.md           ← 阶段 1 可选前置草稿（用户自己写半成品）
 ├── {slug}-design.md           ← 阶段 1 方案文件
+├── {slug}-design-review.md    ← 阶段 1.5 人审前方案审查报告
 ├── {slug}-checklist.yaml      ← 阶段 1 生成 steps + checks，2/3 阶段更新 status
 ├── {slug}-review.md           ← 阶段 2.5 代码审查报告
 ├── {slug}-qa.md               ← 阶段 2.6 QA 验证报告
@@ -42,24 +43,25 @@ brainstorm 是讨论层独立入口，会分诊：case 1（清楚 → 直接 des
 
 ---
 
-## 五个阶段
+## 标准阶段
 
 | 阶段 | 子技能 | 产出 | 谁主导 |
 |---|---|---|---|
 | 0 brainstorm（可选，独立入口） | `cs-brainstorm` | case 2 时产出 brainstorm note | AI 思考伙伴，用户拍板 |
-| 1 方案设计 | `cs-feat-design` | design.md + checklist.yaml | AI 起草，用户整体 review |
+| 1 方案设计 | `cs-feat-design` | design.md + checklist.yaml | AI 起草候选方案 |
+| 1.5 方案审查 | `cs-feat-design-review` | design-review.md | 独立 agent / AI 人审前审查 |
 | 2 分步实现 | `cs-feat-impl` | 代码 + 阶段汇报 | AI 按方案执行 |
 | 2.5 代码审查 | `cs-feat-review` | review.md | AI 只读审查，用户决定是否修 |
 | 2.6 QA 验证 | `cs-feat-qa` | qa.md | AI 运行证据，用户确认风险 |
 | 3 验收闭环 | `cs-feat-accept` | acceptance.md | AI 逐层核对，用户终审 |
 
-阶段间有人工 checkpoint。上一阶段没拿到用户明确放行，下一阶段别开始——防止 AI 一口气从需求跑到代码、跑出来才发现走偏。
+阶段间有 gate 和人工 checkpoint。方案先过 design-review，再交给用户整体确认；用户没明确放行，下一阶段别开始——防止 AI 一口气从需求跑到代码、跑出来才发现走偏。
 
 阶段 0 可选且是 feature 流程的**外部入口**——`cs-brainstorm` 同时服务 feature 和 roadmap。case 3（大需求）讨论被移交给 `cs-roadmap` 不再回 feature 流程；roadmap 拆出子 feature 后从 `cs-feat-design` 的"从 roadmap 条目起头"入口进来。
 
 ### Fastforward 模式
 
-需求清楚 + 范围小时走完整五阶段太啰嗦。fastforward 把 design 压成 4 节（需求摘要 / 设计方案 / 验收标准 / 推进步骤），用户一次确认后直接实现。触发："快速模式"、"fastforward"、"直接开干"、"别那么多步骤"，去 `cs-feat-ff`。
+需求清楚 + 范围小时走标准流程太啰嗦。fastforward 把 design 压成 4 节（需求摘要 / 设计方案 / 验收标准 / 推进步骤），用户一次确认后直接实现。触发："快速模式"、"fastforward"、"直接开干"、"别那么多步骤"，去 `cs-feat-ff`。
 
 **别走** fastforward：跨多个子系统、有术语冲突风险、推进步骤超过 4 步——这些情况跳过 design 意味着 AI 和用户没共同确认过同一份方案，实现完容易发现彼此理解不一样。
 
@@ -78,6 +80,9 @@ brainstorm 是讨论层独立入口，会分诊：case 1（清楚 → 直接 des
 | `{slug}-intent.md` 已填好 | `cs-feat-design`（读 intent 作输入） |
 | 用户说"快速模式 / fastforward" | `cs-feat-ff` |
 | `{slug}-brainstorm.md` 已存在，要进设计 | `cs-feat-design` |
+| `{slug}-design.md` 是 draft 且没有 `{slug}-design-review.md` | `cs-feat-design-review` |
+| `{slug}-design-review.md` changes-requested / blocked | `cs-feat-design` 修订后重跑 `cs-feat-design-review` |
+| `{slug}-design-review.md` passed，但 design 还没 approved | 交给用户整体 review，确认后回 `cs-feat-design` 标 approved |
 | `{slug}-design.md` 已 approved、代码没动 | `cs-feat-impl` |
 | fastforward design 已确认 | `cs-feat-impl` |
 | 代码已写完但没有 `{slug}-review.md` | `cs-feat-review` |

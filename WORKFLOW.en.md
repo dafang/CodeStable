@@ -9,11 +9,12 @@ cs
 └── cs-onboard
     ├── cs-req / cs-arch
     ├── cs-roadmap
-    │   └── cs-roadmap-impl
-    ├── cs-feat-design -> cs-feat-impl -> cs-feat-accept
+    │   ├── cs-roadmap-review
+    │   └── cs-roadmap-impl-goal
+    ├── cs-feat-design -> cs-feat-design-review -> cs-feat-impl -> cs-feat-review -> cs-feat-qa -> cs-feat-accept
     ├── cs-issue-report -> cs-issue-analyze -> cs-issue-fix
     ├── cs-refactor / cs-refactor-ff
-    └── cs-learn / cs-trick / cs-decide / cs-explore
+    └── cs-learn / cs-trick / cs-decide / cs-explore / cs-note
 ```
 
 Vertical means layers, not strict time order. Long-lived archives are refreshed repeatedly; the roadmap layer is entered for large needs. Execution is event-driven: new capability goes to feature flow, bugs go to issue flow, and code rot goes to refactor flow. The cross-cut layer is the knowledge flywheel.

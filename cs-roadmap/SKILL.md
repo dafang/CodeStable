@@ -65,6 +65,7 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 .codestable/roadmap/{slug}/
 ├── {slug}-roadmap.md       主文档：背景 / 范围 / 模块拆分（概设）/ 接口契约（架构层详设）/ 子 feature 清单 / 排期
 ├── {slug}-items.yaml       机器可读清单（feature-design 读、feature-acceptance 回写）
+├── {slug}-roadmap-review.md 独立规划审查报告（人审前 gate）
 └── drafts/                 可选，调研 / 讨论 / 草稿
 ```
 
@@ -121,7 +122,7 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 
 ### Phase 4：自查清单
 
-review 前自跑一遍汇报处理：
+独立 review 前自跑一遍汇报处理：
 
 1. 模块拆分讲清了吗？每个模块职责一句话能说出来？
 2. 接口契约写到可执行程度了吗？feature-design 看完不需要回来问就能直接照着实现？
@@ -141,15 +142,26 @@ review 前自跑一遍汇报处理：
 16. **交付物自查**：每条做完后是否能从仓库事实看到产物，而不是只从汇报看到？
 17. **知识回写自查**：哪些规则或坑会影响后续 feature？是否放进观察项，等 acceptance 验证后触发对应沉淀流程？
 
-### Phase 5：用户 review
+### Phase 5：候选落盘 + 独立 review gate
 
-主文档 + items.yaml 完整贴给用户，并附上 Phase 4 自查结论、Top 3 风险与缓解、关键假设。改到用户明确"可以了"。
+先把候选稿写到标准 roadmap 目录，给 `cs-roadmap-review` 稳定输入：
 
-### Phase 6：落盘
+- **new**：建 `.codestable/roadmap/{slug}/`；写主文档 `status: draft`；写 items.yaml（每条 `status: planned`、`feature: null`）；`validate-yaml.py` 校验。
+- **update**：直接更新主文档 / items.yaml 的候选内容，结构性改动文末加变更日志；重新校验 yaml。
 
-**new**：建 `.codestable/roadmap/{slug}/`；写主文档（`status: active` / `created` / `last_reviewed` 当天）；写 items.yaml（每条 `status: planned`、`feature: null`）；`validate-yaml.py` 校验。
+然后运行 `cs-roadmap-review`：
 
-**update**：改主文档（`last_reviewed` 当天，结构性改动文末加变更日志）；改 items.yaml 对应条目（drop 不删，`status: dropped` 留存理由）；重新校验 yaml。
+- `passed`：才能把 roadmap 交给用户 review。
+- `changes-requested`：按 finding 修 roadmap/items，重新校验并重跑 `cs-roadmap-review`。
+- `blocked`：补齐输入、等待 independent reviewer，或让用户明确降级 local-only 后重跑。
+
+### Phase 6：用户 review
+
+主文档 + items.yaml + `{slug}-roadmap-review.md` 完整贴给用户，并附上 Phase 4 自查结论、Top 3 风险与缓解、关键假设、review findings / residual risk。改到用户明确"可以了"。如果用户修改导致 roadmap/items 发生实质变化，回到 Phase 5 重跑 review gate。
+
+### Phase 7：确认落盘
+
+用户确认后，new 模式把主文档 `status` 改为 `active`、`last_reviewed` 改为当天；update 模式更新 `last_reviewed` 当天。重新校验 yaml。
 
 **不改 requirements / architecture**——roadmap 是规划层，那两层只描述现状。拆解过程发现 req / 架构过时，在主文档"观察项"记一句给用户，不顺手改。
 
@@ -213,6 +225,7 @@ feature-design 发现接口契约不合理 / 漏了 / 描述不准 → **回 `cs
 - [ ] 需要后续沉淀的 convention / learning / guide / attention 候选已写入观察项
 - [ ] items.yaml 通过 `validate-yaml.py` 校验
 - [ ] Phase 4 自查清单逐条跑过并汇报
+- [ ] `{slug}-roadmap-review.md` 已通过 `cs-roadmap-review`，没有 unresolved blocking finding
 - [ ] 用户 review 通过
 - [ ] 没有顺手改 req / arch / 代码 / 已有 feature
 
@@ -245,3 +258,4 @@ feature-design 发现接口契约不合理 / 漏了 / 描述不准 → **回 `cs
 - drop 条目直接删——历史丢失
 - roadmap 跑偏成给单条子 feature 写详细方案
 - update 改接口契约不评估存量影响——已 in-progress / done 的 feature 没人看到契约变了
+- 跳过 `cs-roadmap-review` 直接让用户拍板——用户只能看到规划表面，看不到接口、依赖、验收策略的独立审查结论

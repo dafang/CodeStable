@@ -23,14 +23,18 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 │   └── {slug}/            一个大需求一个子目录（cs-roadmap 产出）
 │       ├── {slug}-roadmap.md   主文档：背景 / 范围 / 模块拆分 / 接口契约 / 子 feature 清单 / 排期
 │       ├── {slug}-items.yaml   机器可读子 feature 清单，acceptance 回写状态
+│       ├── {slug}-roadmap-review.md 人工确认前的规划审查报告
 │       └── drafts/             可选
 ├── features/              feature spec 聚合根
 │   └── YYYY-MM-DD-{slug}/  每个 feature 一个目录
 │       ├── {slug}-brainstorm.md  （可选，case 2 时产出）
 │       ├── {slug}-design.md      （标准流程）
 │       ├── {slug}-checklist.yaml （标准流程）
+│       ├── {slug}-design-review.md（人审前方案审查）
+│       ├── {slug}-review.md      （实现后代码审查）
+│       ├── {slug}-qa.md          （代码审查后 QA gate）
 │       ├── {slug}-acceptance.md  （标准流程）
-│       └── {slug}-ff-note.md     （fastforward 通道唯一产物，与上面四份互斥）
+│       └── {slug}-ff-note.md     （fastforward 通道唯一产物，与标准流程产物互斥）
 ├── issues/                issue spec 聚合根
 │   └── YYYY-MM-DD-{slug}/
 │       ├── {slug}-report.md
@@ -103,7 +107,7 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 ## 2. {slug}-checklist.yaml 生命周期
 
 - 是 feature 工作流的唯一执行清单
-- 由 `cs-feat-design` 在 design 确认通过后一次生成 `steps` + `checks`
+- 由 `cs-feat-design` 在 draft design 成型后先生成 `steps` + `checks`，供 `cs-feat-design-review` 和用户 review；用户确认后随 design 一起进入实现
 - `cs-feat-ff` **不生成** checklist（也不写 design / acceptance），是跳过 spec 流程直接写代码的超轻量通道；唯一留下的痕迹是动手后回写的 `{slug}-ff-note.md`（轻量回顾，参与 scoped-commit、可被 cs-arch / cs-req backfill 检索到）
 
 `steps` 的粒度是 **编排-计算分离维度的切片策略**——按"先编排骨架、后计算节点、最后持久化与测试"写（最简 Workflow 先行 → 逐个节点填充），**不下沉到 file:line / 函数级**。具体改哪个文件由 implement 阶段决定。
@@ -141,11 +145,15 @@ planned  → dropped      （cs-roadmap update 模式，用户决定不做时改
 
 **cs-roadmap 的职责**：生成和维护 roadmap 主文档 + items.yaml；把 `planned` 改 `dropped`（用户放弃时）；不改 `in-progress` / `done`（feature 技能负责）。
 
+**cs-roadmap-review 的职责**：在人审前只读审查 roadmap 主文档 + items.yaml + 相关事实，写 `{slug}-roadmap-review.md`；不修改 roadmap，不替用户批准。
+
 **cs-feat-design 的职责**（从 roadmap 起头时）：
 
 1. design.md frontmatter 加 `roadmap: {roadmap-slug}` + `roadmap_item: {子 feature slug}`
 2. items.yaml 对应条目 `status: in-progress` + `feature: YYYY-MM-DD-{slug}`
 3. 校验 yaml
+
+**cs-feat-design-review 的职责**：在人审前只读审查 design + checklist + 相关事实，写 `{slug}-design-review.md`；不修改 design/checklist，不替用户批准。
 
 直接起 feature（非 roadmap 来）两字段留空，不触发 roadmap 写。
 

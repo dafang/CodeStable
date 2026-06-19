@@ -41,8 +41,8 @@ CodeStable 把开发活动建模成 **7 个实体 + 3 个流程**，所有产物
 .codestable/
 ├── requirements/    需求实体（"为什么要有这个能力"，只记现状）
 ├── architecture/    架构实体（"系统现在长什么样"，只记现状）
-├── roadmap/         规划层（"接下来怎么做这块大需求 + 模块切 + 接口定"）
-├── features/        新增能力 spec 聚合根（design / impl / review / qa / accept）
+├── roadmap/         规划层（roadmap / roadmap-review / goal 执行包）
+├── features/        新增能力 spec 聚合根（design / design-review / impl / review / qa / accept）
 ├── issues/          修 bug spec 聚合根（report / analyze / fix）
 ├── refactors/       重构 spec 聚合根（beta）
 ├── audits/          审计实体（主动扫描发现清单，不定修）
@@ -51,7 +51,7 @@ CodeStable 把开发活动建模成 **7 个实体 + 3 个流程**，所有产物
 
 **三条流程**：
 
-- **新增能力**：`cs-feat-design` → `cs-feat-impl` → `cs-feat-review` → `cs-feat-qa` → `cs-feat-accept`（想法模糊先 `cs-brainstorm` 分诊）
+- **新增能力**：`cs-feat-design` → `cs-feat-design-review` → `cs-feat-impl` → `cs-feat-review` → `cs-feat-qa` → `cs-feat-accept`（想法模糊先 `cs-brainstorm` 分诊）
 - **修 bug**：`cs-issue-report` → `cs-issue-analyze` → `cs-issue-fix`
 - **重构**（beta）：`cs-refactor` / `cs-refactor-ff`
 
@@ -79,7 +79,9 @@ CodeStable 把开发活动建模成 **7 个实体 + 3 个流程**，所有产物
 | 补 / 更新需求文档 | `cs-req` |
 | 补 / 更新 / 检查架构文档 / "刷新架构 doc" / "做架构体检" | `cs-arch` |
 | 大需求拆解 / "我想要一个 X 系统" / 排期规划 / 模块拆分 + 接口契约 | `cs-roadmap` |
+| roadmap 人工确认前的规划审查 / "review 这个 roadmap" | `cs-roadmap-review` |
 | 推进已有 roadmap / 执行整个 roadmap / "继续 roadmap" / "用 goal 稳步推进 roadmap" | `cs-roadmap-impl-goal` |
+| feature design 人工确认前的方案审查 / "review 这个 design" | `cs-feat-design-review` |
 | 技术选型 / 长期约束 / 编码规约 | `cs-decide` |
 | 踩坑回顾 / 经验总结 / "值得记下来" | `cs-learn` |
 | 可复用编程模式 / 库用法 / "以后做 X 就该这样" | `cs-trick` |

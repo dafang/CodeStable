@@ -305,7 +305,7 @@ Commands to re-run: <去重命令列表>
 2. 确认每个 item 都是 `done`，或有理由 `dropped`。
 3. 重读每个 feature 的 design / checklist / review / QA / acceptance，确认 acceptance `doc_type=feature-acceptance` 且 `status=passed`。
 4. 按 goal-plan 汇总最终聚合测试命令：build / typecheck / lint / unit / integration / e2e / smoke / docs/schema 校验。功能性 roadmap 至少应包含能覆盖最终用户/API/CLI/运行时闭环的命令或手工/API/browser smoke；非功能性 roadmap 可用静态 / 一致性 / schema / 文档校验替代，但必须写明理由。
-5. 去重重跑最终聚合测试命令。不能因为耗时跳过功能性核心命令；命令因外部网络、凭证、服务、设备不可用而无法运行时，判断它是否是核心验收路径：核心路径无法验证则 `blocked`，非核心项才可记 residual-risk / trust-prior。
+5. 去重重跑最终聚合测试命令。不能因为耗时跳过功能性核心命令；命令因外部网络、凭证、服务、设备不可用或成本过高而无法运行时，判断它是否是核心验收路径：核心路径无法验证则 `blocked`，非核心项才可记 residual-risk / trust-prior。
 6. 逐条核验 roadmap 级核心验收路径：
    - 功能性核心路径必须有实际运行证据：e2e / browser / API / CLI / manual smoke / integration test 任一合理组合。
    - 真实用户路径、真实 API、真实 runtime turn、权限/取消/持久化等被 roadmap 标为成功标准的项，不能只用 typecheck / lint / diff review 代替。
@@ -366,6 +366,10 @@ round: 1
 - Architecture / requirement / roadmap writebacks: pass/fail
 
 ## 6. QA Residual Risk Review
+
+| Feature | Residual risks | Core gap hidden? | Trust-prior items | Action |
+|---|---|---|---|---|
+| {feature-slug} | none / list | no / yes | none / list + evidence source | pass / blocked |
 
 - Core gaps hidden in residual-risk: none / list
 - Non-core residual risks: list / none

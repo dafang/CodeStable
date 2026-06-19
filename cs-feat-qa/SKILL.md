@@ -153,7 +153,7 @@ round: 1
 
 | ID | 来源 | 核心性 | 场景 / 风险 | 证据类型 | 命令或动作 | 期望 | 结果 |
 |---|---|---|---|---|---|---|---|
-| QA-001 | design S1 | core-functional/supporting/non-functional | {描述} | unit/e2e/browser/manual | `{命令}` | {期望} | pass/fail/blocked |
+| QA-001 | design S1 | core-functional/supporting/non-functional | {描述} | unit/integration/e2e/browser/API/manual/typecheck/diff | `{命令}` | {期望} | pass/fail/blocked |
 
 ## 3. Command Results
 

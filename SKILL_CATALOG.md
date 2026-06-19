@@ -32,3 +32,4 @@
 | 探索与文档 | `cs-audit` | 主动审计代码中的 bug 隐患、安全、性能、可维护性和架构偏离 |
 | 探索与文档 | `cs-guide` | 编写对外开发者指南 |
 | 探索与文档 | `cs-libdoc` | 为库的公开表面生成参考文档 |
+| 探索与文档 | `cs-docs-neat` | 阶段收尾时同步 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆 |

@@ -12,7 +12,7 @@
 
 <p>
   <img src="https://img.shields.io/badge/status-beta-F59E0B?style=flat-square" alt="Status"/>
-  <img src="https://img.shields.io/badge/cs--skills-30-6366F1?style=flat-square" alt="CodeStable Skills"/>
+  <img src="https://img.shields.io/badge/cs--skills-32-6366F1?style=flat-square" alt="CodeStable Skills"/>
   <img src="https://img.shields.io/badge/license-MIT-10B981?style=flat-square" alt="License"/>
 </p>
 
@@ -110,6 +110,8 @@ CodeStable 顺着软件编码的真实流程来设计，把开发活动建模成
 | **特性引入** | `cs-feat` → `cs-feat-design` → `cs-feat-design-review` → `cs-feat-impl` → `cs-feat-review` → `cs-feat-qa` → `cs-feat-accept` | 想清楚 → 方案审查 → 逐步编码 → 代码审查 → QA → 验收闭环 |
 | **问题修改** | `cs-issue-report` → `cs-issue-analyze` → `cs-issue-fix` | 跟 AI 说哪里有问题 → 让 AI 分析根因 → 让 AI 定点修复 |
 | **代码重构** | `cs-refactor` (beta) | 软件架构腐化不是一蹴而就的。AI 辅助重构，但**终归是人在重构**——还在迭代中，欢迎赐教 |
+
+阶段或里程碑收尾时，用 `cs-docs-neat` 整理 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆，避免文档与代码脱节。
 
 
 ---

@@ -128,7 +128,8 @@ issue-fix 比 feature-implement 更谨慎：**触发反射信号但结论是"该
 1. 暴露了值得复用的坑点 → "沉淀 learning？（`cs-learn`）"
 2. 沉淀出长期约束 / 规约 / 技术决定 → "归档决定？（`cs-decide`）"
 3. 这个 bug 暴露了项目通用的硬约束 / 命令陷阱 / 环境设置（一两行能讲清、CodeStable 技能每次启动都该知道）→ "记到 attention.md？（`cs-note`）"
-4. 最后问是否代为提交。同意时按收尾提交规则执行
+4. 修复暴露了 README/docs、`CLAUDE.md` / `AGENTS.md` 或 agent 记忆不一致 → "做一轮文档与记忆整理吗？（`cs-docs-neat`）"
+5. 最后问是否代为提交。同意时按收尾提交规则执行
 
 建议：把 issue 目录文件和代码改动放同一次提交方便追溯；"顺手发现"另开 `cs-issue-report` 处理别塞这个 PR。
 

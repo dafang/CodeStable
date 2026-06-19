@@ -14,10 +14,11 @@ cs
     ├── cs-feat-design -> cs-feat-design-review -> cs-feat-impl -> cs-feat-review -> cs-feat-qa -> cs-feat-accept
     ├── cs-issue-report -> cs-issue-analyze -> cs-issue-fix
     ├── cs-refactor / cs-refactor-ff
-    └── cs-learn / cs-trick / cs-decide / cs-explore / cs-note
+    └── cs-learn / cs-trick / cs-decide / cs-explore / cs-note / cs-docs-neat
 ```
 
 Vertical means layers, not strict time order. Long-lived archives are refreshed repeatedly; the roadmap layer is entered for large needs. Execution is event-driven: new capability goes to feature flow, bugs go to issue flow, and code rot goes to refactor flow. The cross-cut layer is the knowledge flywheel.
+`cs-docs-neat` is the phase-close cleanup skill: it reconciles `.codestable/`, README/docs, `CLAUDE.md` / `AGENTS.md`, and agent memory without adding a new archive document type.
 
 ## Runtime Structure
 

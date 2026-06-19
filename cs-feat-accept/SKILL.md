@@ -298,7 +298,8 @@ final audit 发现任何缺口：
 3. 接口变更 / 用户可见行为变更 → "需要更新指南吗？（`cs-guide`）"
 4. 库公开接口（组件 / 函数 / 命令）变了 → "需要更新 API 参考吗？（`cs-libdoc`）"
 5. 第 8 节有 attention.md 候选 → 逐条问"候选 X 加到 attention.md 吗？" 用户明确同意 → 触发 `cs-note` 走分节归类 / 查重 / 软上限检查（不在 accept 里手写，避免和 cs-note 各搞一套口径）；**一次一条**
-6. 最后问是否代为 scoped-commit
+6. 阶段 / 里程碑收尾、准备交接，或本次改动影响 README/docs、`CLAUDE.md` / `AGENTS.md`、agent 记忆 → "要做一轮文档与记忆整理吗？（`cs-docs-neat`）"
+7. 最后问是否代为 scoped-commit
 
 收尾提交规则看 `shared-conventions.md` 第 4 节。提交范围：功能代码 + 方案 doc + 验收报告 + 本次实际更新的架构 doc / req doc / roadmap items.yaml + 主文档。
 

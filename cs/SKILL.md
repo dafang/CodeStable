@@ -88,6 +88,7 @@ CodeStable 把开发活动建模成 **7 个实体 + 3 个流程**，所有产物
 | 一两行的项目注意事项 / 编译特殊设置 / 命令陷阱 / "记到 attention.md" | `cs-note` |
 | 开发者指南 / 用户指南 | `cs-guide` |
 | 库 API 参考 | `cs-libdoc` |
+| 阶段收尾 / 整理文档 / 同步 `CLAUDE.md` 或 `AGENTS.md` / 新人交接 | `cs-docs-neat` |
 | 用户在 feature / issue 流程中间问"下一步" | 路由到对应入口（`cs-feat` / `cs-issue`），让该入口判断当前阶段 |
 
 **判不出来 / 太抽象**："听起来像 {猜测}，但你描述里 {缺什么}。是 {选项 A} 还是 {选项 B}？" 让用户选不要硬猜。
@@ -124,6 +125,7 @@ CodeStable 把开发活动建模成 **7 个实体 + 3 个流程**，所有产物
 - 规定"全项目今后都按 X 来" → `cs-decide`
 - 调查"X 现在是什么样" → `cs-explore`
 - 一两行常驻提示"CodeStable 技能每次启动都得知道 X" → `cs-note`（写到 `.codestable/attention.md`）
+- 阶段收尾后全局检查 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md`、agent 记忆是否同步 → `cs-docs-neat`
 
 判不出问用户："这个你想记成 {踩坑回顾 / 复用处方 / 长期规约 / 调研存档 / 常驻提示} 哪一种？"
 

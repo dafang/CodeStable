@@ -14,10 +14,11 @@ cs
     ├── cs-feat-design -> cs-feat-design-review -> cs-feat-impl -> cs-feat-review -> cs-feat-qa -> cs-feat-accept
     ├── cs-issue-report -> cs-issue-analyze -> cs-issue-fix
     ├── cs-refactor / cs-refactor-ff
-    └── cs-learn / cs-trick / cs-decide / cs-explore / cs-note
+    └── cs-learn / cs-trick / cs-decide / cs-explore / cs-note / cs-docs-neat
 ```
 
 纵向是层次，不是严格时间顺序。长效档案层会反复刷新，规划层只在大需求时进入。第 3 层是事件入口：新需求走 feature，bug 走 issue，腐化走 refactor。横切层是知识飞轮：任何流程都可以把值得复用的经验沉淀到 compound。
+`cs-docs-neat` 是阶段收尾整理器，负责同步 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆，不新增沉淀文档类型。
 
 ## 运行时结构
 

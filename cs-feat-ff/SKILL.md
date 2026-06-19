@@ -184,7 +184,8 @@ tags: [...]
 
 1. 暴露的坑 → "沉淀 learning？（`cs-learn`）"
 2. 拍板的长期约束 → "归档决定？（`cs-decide`）"
-3. 最后问是否代为 scoped-commit
+3. 快速改动影响 README/docs、`CLAUDE.md` / `AGENTS.md` 或 agent 记忆 → "做一轮文档与记忆整理吗？（`cs-docs-neat`）"
+4. 最后问是否代为 scoped-commit
 
 ---
 

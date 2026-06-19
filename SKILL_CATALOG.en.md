@@ -32,3 +32,4 @@
 | Explore and docs | `cs-audit` | Audit code for bug, security, performance, maintainability, and architecture risks |
 | Explore and docs | `cs-guide` | Write outward-facing developer guides |
 | Explore and docs | `cs-libdoc` | Generate reference docs for public library surfaces |
+| Explore and docs | `cs-docs-neat` | Reconcile `.codestable/`, README/docs, `CLAUDE.md` / `AGENTS.md`, and agent memory at phase close |

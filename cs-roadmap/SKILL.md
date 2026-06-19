@@ -167,6 +167,8 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 
 如果用户想把整份 roadmap 自动推进到底，确认落盘后提示下一步可以走 `cs-roadmap-impl-goal`：它会先完成所有子 feature design + design review，再让用户二次确认，最后输出可直接运行的 goal 指令。
 
+确认落盘后再提示一句："这份 roadmap 已经改变了后续工作入口和文档索引，要不要做一轮文档与记忆整理？（`cs-docs-neat`）" 用户说不用就跳过；这是收尾引导，不是 roadmap 通过条件。
+
 ---
 
 ## 和 feature 流程的衔接

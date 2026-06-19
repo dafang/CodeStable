@@ -179,19 +179,27 @@ planned  → dropped      （cs-roadmap update 模式，用户决定不做时改
 2. `cs-decide`：长期约束 / 选型
 3. `cs-guide`：开发者 / 用户指南
 4. `cs-libdoc`：公开 API 参考
-5. `scoped-commit`
+5. `cs-docs-neat`：阶段 / 里程碑收尾时同步 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆
+6. `scoped-commit`
 
 **issue-fix** 收尾按顺序判断：
 
 1. `cs-learn`：坑点
 2. `cs-decide`：暴露的长期约束
-3. `scoped-commit`
+3. `cs-docs-neat`：修复暴露了文档、agent 入口或记忆不一致时做全局整理
+4. `scoped-commit`
 
 **feature-ff** 收尾按顺序判断（比标准 acceptance 短，没有 architecture / req 回写动作）：
 
 1. `cs-learn`：动手过程暴露的坑
 2. `cs-decide`：动手过程拍板的长期约束
-3. `scoped-commit`
+3. `cs-docs-neat`：快速改动影响 README/docs 或 agent 入口时同步
+4. `scoped-commit`
+
+**roadmap** 收尾按顺序判断：
+
+1. `cs-docs-neat`：roadmap 确认落盘或整个 roadmap goal 完成后，同步 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆
+2. 后续若要自动推进整份 roadmap，再走 `cs-roadmap-impl-goal`
 
 **统一规则**：一律一句话提示；用户说"不用"立即跳过；不强制；上游主动提示，下游承接执行。
 

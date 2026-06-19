@@ -362,7 +362,7 @@ CS_ROADMAP_GOAL_COMPLETE
 Roadmap <roadmap-slug> complete.
 Features accepted: <数量>
 Final audit passed.
-Manual follow-up: <事项|none>
+Manual follow-up: <run cs-docs-neat to reconcile docs/memory|none>
 ```
 
 只有 `CS_ROADMAP_GOAL_COMPLETE` 出现，`/goal` 才算满足。

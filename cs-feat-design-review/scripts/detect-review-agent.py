@@ -107,7 +107,7 @@ def build_result() -> dict[str, object]:
         reason = "Paseo is available; use an audit subagent when the runtime exposes Paseo tools."
     elif direct_agents:
         mode = "local-review-with-agent-cli-available"
-        reason = "Direct agent CLIs exist, but cs-feat-review should not invoke them automatically."
+        reason = "Direct agent CLIs exist, but cs-feat-design-review should not invoke them automatically."
     else:
         mode = "local-review"
         reason = "No managed independent reviewer was detected."

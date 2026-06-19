@@ -13,7 +13,7 @@ description: roadmap 人工确认前的规划审查 gate。对照 roadmap 主文
 
 目标不是追求"规划看起来完整"，而是确认这份 roadmap 已经具备让用户有效 review 的条件：目标可证伪、范围边界清楚、模块拆分与接口契约可执行、子 feature 可独立验证、依赖 DAG 合理、风险和验证策略提前暴露。
 
-> 共享路径与命名约定看 `.codestable/reference/shared-conventions.md`。roadmap 模板看 `cs-roadmap/reference.md`。
+> 共享路径与命名约定看 `.codestable/reference/shared-conventions.md`。roadmap 的具体结构以目标 `{slug}-roadmap.md` / `{slug}-items.yaml` 和项目内共享口径为准。
 
 ---
 

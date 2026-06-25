@@ -47,7 +47,6 @@ CodeStable 把开发活动建模成 **9 个实体 + 4 个流程**，所有产物
 ├── issues/          修 bug spec 聚合根（report / analyze / fix）
 ├── refactors/       重构 spec 聚合根（beta）
 ├── audits/          审计实体（主动扫描发现清单，不定修）
-├── tasks/           任务账本（active / archived，跨流程恢复与归档）
 └── compound/        知识沉淀（learning / trick / decision / explore）
 ```
 
@@ -58,7 +57,7 @@ CodeStable 把开发活动建模成 **9 个实体 + 4 个流程**，所有产物
 - **修 bug**：`cs-issue-report` → `cs-issue-analyze` → `cs-issue-fix`
 - **重构**（beta）：`cs-refactor` / `cs-refactor-ff`
 
-**横切**：任一流程落盘走 `cs-task` 记账；commit 前走 `cs-code-review` 独立评审；发现"值得记下来" → `cs-learn` / `cs-trick` / `cs-decide` / `cs-explore` 沉淀到 `compound/`。
+**横切**：commit 前走 `cs-code-review` 独立评审；发现"值得记下来" → `cs-learn` / `cs-trick` / `cs-decide` / `cs-explore` 沉淀到 `compound/`。
 
 **核心理念**：编排的是软件本身的生命周期（需求、架构、特性、bug、决策），不是 Agent。人在环——程序员对整体把控负责，AI 是高效执行体。
 
@@ -111,7 +110,6 @@ L2/L3 需 owner 审批/选择/授权/接受风险时，子流程先按 `.codesta
 | roadmap 人工确认前的规划审查 / "review 这个 roadmap" | `cs-roadmap-review` |
 | 推进已有 roadmap / 执行整个 roadmap / "继续 roadmap" / "用 goal 稳步推进 roadmap" | `cs-roadmap-impl-goal` |
 | feature design 人工确认前的方案审查 / "review 这个 design" | `cs-feat-design-review` |
-| 任务恢复 / "继续当前任务" / "任务列表" / "历史任务" / "归档任务" | `cs-task`（active / archived 账本；跨流程恢复） |
 | 合并前审一下 / "code review" / "代码评审" / 准备 PR / merge | `cs-code-review`（对当前 diff 做独立评审，质量门禁） |
 | CodeStable 自身技能 / harness / verifier / installed copy 更新 | `codestable-maintainer`（源码分支验证；真实 `~/.claude/skills` 只从 `origin/main` 同步） |
 | 技术选型 / 长期约束 / 编码规约 | `cs-decide` |
@@ -144,7 +142,6 @@ L2/L3 需 owner 审批/选择/授权/接受风险时，子流程先按 `.codesta
 | `cs-issue-fix` | L0/L3 | 修复暴露错误 spec、capability boundary 或公开行为变更 |
 | `cs-refactor` / `cs-refactor-ff` | L1/L2 | 跨模块、有风险或行为边界不确定 |
 | `cs-code-review` | L1/L3 | review 发现 Critical/Important 或触达长期 spec / 公开契约 |
-| `cs-task` | L0 | 仅账本记录；任务恢复涉及方向选择时回对应流程 |
 | `cs-req` | L3 | 总是：需求工作改变 future agent 的 source-of-truth |
 | `cs-arch` | L1/L3 | 出现 code/doc/intent 冲突 |
 | `cs-audit` | L1/L2 | owner 须裁定修 / 延 / 忽略 |

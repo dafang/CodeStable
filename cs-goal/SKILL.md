@@ -41,19 +41,6 @@ If `.codestable/` is missing, route to `cs-onboard`.
 
 ---
 
-## Task Integration
-
-- Level: `auto` for goal artifacts, `internal-runtime` for the in-goal loop.
-- Before first writing goal artifacts (`goal.md`, `state.yaml`, iteration
-  reports), reuse or create the current flow's Task List (`cs-task`); no Task,
-  no write. This complements the start report and `state.yaml`, never overrides
-  them as the machine source of truth.
-- Each completed iteration that lands artifacts updates the Task List before
-  moving on; a goal is not marked `completed` until terminal functional
-  acceptance passes.
-
----
-
 ## When To Use
 
 Use `cs-goal` when the owner expresses a bounded destination:

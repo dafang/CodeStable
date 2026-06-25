@@ -17,12 +17,6 @@ scan（扫优化点清单）→ design（和用户定做哪几条 + 顺序）→
 
 **核心纪律**：行为等价是底线。一旦会改外部可观察行为 → 不走 refactor，走 feature（需求变）或 issue（bug 修）。
 
-## Task 接入
-
-- 等级：`auto`。会写 `.codestable/refactors` 产物，落盘前对齐 Task List。
-- 首次落盘前复用/创建当前 refactor 的 Task List，无 Task 不动手；阶段产物落盘先更新 Task List 再继续。
-- 收口：重构验证通过、code-review 通过后标 `completed` 并转 `cs-task` archive。
-
 ## 执行 gate（worktree + commit）
 
 进入 apply 前运行 start gate，`{slug}` 为 refactor 目录名：

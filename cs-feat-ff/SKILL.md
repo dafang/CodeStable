@@ -13,12 +13,6 @@ description: feature 流程的超轻量通道——不写 design / checklist 直
 
 很轻：没有 design doc / checklist / 验收清单 / 动手前的用户确认。看完指引，该读代码读、该写代码写、写完回写一段话。
 
-## Task 接入
-
-- 等级：`auto`。回写 `{slug}-ff-note.md` 前必须复用 / 创建当前 feature 的 Task List（`cs-task`），无 Task 不动手。
-- ff-note 落盘、验证完成后，先更新 Task List 步骤状态与文档索引再继续。
-- 不标 `completed`：fastforward 通道末端只把任务推进到收尾 commit；如需正式收口转 archive，由用户或后续 accept 流程定。
-
 ---
 
 ## 动手前先扫一眼 .codestable/

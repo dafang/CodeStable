@@ -47,7 +47,6 @@ CodeStable 把这几类场景各配一套子技能，产物放进统一的目录
 - `cs-guide` — 写给外部读者的开发者指南 / 用户指南
 - `cs-libdoc` — 为库的公开 API 逐条目生成参考文档
 - `cs-docs-neat` — 阶段 / 里程碑收尾时，全局整理 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆，做反膨胀、补漏和冲突修正
-- `cs-task` — 跨流程任务账本（`.codestable/tasks/active|archived`），落盘流程的中断恢复与完成归档入口
 - `codestable-maintainer` — 维护 CodeStable 自身技能库 / harness / verifier / installed copy（源仓分支验证 + main-only 同步）
 
 
@@ -63,7 +62,6 @@ CodeStable 把这几类场景各配一套子技能，产物放进统一的目录
 | BUG / 异常 / 文档错误 | `cs-issue` |
 | 代码优化 / 重构 / 重写(行为不变) | `cs-refactor` |
 | 合并前代码评审 / "code review" / 准备 PR / merge | `cs-code-review` |
-| 任务恢复 / "继续当前任务" / 任务列表 / 归档任务 | `cs-task` |
 | 摸代码、提问调研 | `cs-explore` |
 | 补 / 更新需求文档 | `cs-req` |
 | 补 / 更新 / 检查架构文档 | `cs-arch` |

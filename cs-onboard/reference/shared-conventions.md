@@ -31,9 +31,6 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 │       ├── {slug}-state.yaml     机器可读状态
 │       ├── {slug}-iteration-*.md 迭代报告
 │       └── {slug}-functional-acceptance.md 子 agent 功能验收
-├── tasks/                任务账本（active/ + archived/）
-│   ├── active/           当前进行中的任务（cs-task 管理）
-│   └── archived/         已完成归档的任务（cs-task 管理）
 ├── features/              feature spec 聚合根
 │   └── YYYY-MM-DD-{slug}/  每个 feature 一个目录
 │       ├── {slug}-brainstorm.md  （可选，case 2 时产出）

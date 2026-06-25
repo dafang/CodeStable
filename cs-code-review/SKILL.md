@@ -28,12 +28,6 @@ description: 横切代码审查 gate——任何流程（feature / issue / refac
 
 **不是 `cs-audit`**：audit 主动扫一片代码找潜在问题；code review 只审当前变更范围。
 
-## Task 接入
-
-- 等级：`auto`。落盘 `{slug}-review.md` 前必须复用 / 创建当前流程的 Task List（`cs-task`），无 Task 不动手。
-- 审查报告落盘、verdict 定稿后，先更新 Task List 步骤状态与文档索引再继续。
-- 不替上游收口：feature 来源 passed → `cs-feat-qa`（feature Task 由 `cs-feat-accept` 收口）；issue / refactor / ff 来源 passed → 交回对应流程做收尾提交并由其收口；changes-requested → 回对应实现技能修复。
-
 ---
 
 ## 输入

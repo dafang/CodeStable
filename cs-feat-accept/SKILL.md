@@ -26,10 +26,6 @@ description: feature 流程阶段 3——验收闭环：对照 design 核实现 
 
 > 共享路径与命名约定看 `.codestable/reference/shared-conventions.md` 第 0 节。
 
-## Task 接入
-
-等级 `auto`：落盘 `{slug}-acceptance.md` / 回写架构 / req / roadmap 前必须复用 / 创建当前 feature 的 Task List（`cs-task`），无 Task 不动手；每完成验收节产物先更新步骤状态与文档索引再继续。收口：本 skill 是 feature 末端，验收通过、用户终审后标 `completed` 并转 `cs-task` archive。
-
 ---
 
 ## 跟 design 的章节强依赖

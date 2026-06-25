@@ -19,12 +19,6 @@ brainstorm 是讨论层独立入口，会分诊：case 1（清楚 → 直接 des
 
 本技能不写代码不写文档，只做一件事：看当前 feature 走到哪步，告诉用户该触发哪个子技能。
 
-## Task 接入
-
-- 等级：`route-only`。本 skill 只路由不建 Task，由下游首次落盘的子技能 create/recovery。
-- 路由判断时只读 Task List 看 feature 走到哪步，不写入、不改状态。
-- 不收口：把任务交给被路由到的子技能推进，本 skill 不标记任何阶段状态。
-
 ---
 
 ## 文件放哪儿

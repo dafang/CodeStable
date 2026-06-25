@@ -139,12 +139,11 @@ L2/L3 需 owner 审批/选择/授权/接受风险时，子流程先按 `.codesta
 | `cs-refactor` / `cs-refactor-ff` | L1/L2 | 跨模块、有风险或行为边界不确定 |
 | `cs-code-review` | L1/L3 | review 发现 Critical/Important 或触达长期 spec / 公开契约 |
 | `cs-req` | L3 | 总是：需求工作改变 future agent 的 source-of-truth |
-| `cs-arch` | L1/L3 | 出现 code/doc/intent 冲突 |
+| `cs-domain` | L1/L3 | 出现 code/doc/intent 冲突 |
 | `cs-audit` | L1/L2 | owner 须裁定修 / 延 / 忽略 |
-| `cs-explore` | L1/L2 | 探索变成决策、规则或 spec 变更 |
-| `cs-decide` | L2/L3 | 决策影响长期 spec 或项目级规则 |
-| `cs-learn` / `cs-trick` / `cs-note` | L1/L2 | 经验升级为项目级规则或常驻指令 |
-| `cs-guide` / `cs-libdoc` / `cs-docs-neat` | L1/L2 | 文档改变 user-facing 契约或公开理解 |
+| `cs-keep` | L1/L3 | 沉淀升级为决策 / 规则 / spec 变更或长期约束 |
+| `cs-note` | L1/L2 | 经验升级为常驻指令 |
+| `cs-doc-tutorial` / `cs-doc-api` / `cs-docs-neat` | L1/L2 | 文档改变 user-facing 契约或公开理解 |
 | `codestable-maintainer` | L2/L3 | 改 CodeStable 自身技能/harness/installed copy |
 
 ---

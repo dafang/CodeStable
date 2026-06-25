@@ -277,10 +277,10 @@ State: blocked
 每个 feature accept 后，列出但不要擅自写入：
 
 - 环境 / 命令 / 工作流事实 → `cs-note`
-- 可复用坑点 / 调试经验 → `cs-learn`
-- 稳定 convention / 架构决定 → `cs-decide`
-- 用户或开发指南变化 → `cs-guide`
-- 公开 API / 组件 / 命令参考变化 → `cs-libdoc`
+- 可复用坑点 / 调试经验 → `cs-keep`
+- 稳定 convention / 架构决定 → `cs-keep`
+- 用户或开发指南变化 → `cs-doc-tutorial`
+- 公开 API / 组件 / 命令参考变化 → `cs-doc-api`
 
 architecture / requirement / roadmap 回写是 acceptance 必做动作，不需要额外征求；其他知识沉淀按用户确认执行。
 
@@ -422,7 +422,7 @@ Knowledge candidates:
 - <候选|none>
 Not worth archiving:
 - <一次性上下文|none>
-Recommended next step: <run cs-learn after user confirmation|none>
+Recommended next step: <run cs-keep after user confirmation|none>
 ```
 
 筛选规则：
@@ -430,7 +430,7 @@ Recommended next step: <run cs-learn after user confirmation|none>
 - pitfall：失败恢复、误判、测试假设、环境/工具坑，后续任务可能重复踩。
 - knowledge：更好的默认做法、工作流改进、可复用设计/验证模式。
 - not worth archiving：只属于本次业务、不会复用、已被 architecture / requirement / roadmap 回写覆盖的事实。
-- 有候选时只建议用户确认后运行 `cs-learn`；不要自动创建或修改 `.codestable/compound/`。
+- 有候选时只建议用户确认后运行 `cs-keep`；不要自动创建或修改 `.codestable/compound/`。
 
 ```text
 CS_ROADMAP_GOAL_AUDIT_COMPLETE

@@ -9,7 +9,7 @@
 | `CLAUDE.md` / `AGENTS.md` 顶部堆"某日某功能上线" | 删除；历史归 git log / changelog，稳定事实归 docs 或 `.codestable/` |
 | agent 入口里复制 architecture / design 的详细机制 | 删除细节，只留规则和文档索引 |
 | `.codestable/attention.md` 写成长篇事故复盘 | 提炼成一行硬约束；细节归 learning / runbook |
-| 外部 memory 描述项目架构 / API / 工作流 | 毕业到 `.codestable/architecture/`、README 或 docs；memory 留指针或删除 |
+| 外部 memory 描述项目架构 / API / 工作流 | 毕业到 `.codestable/requirements/CONTEXT.md`、README 或 docs；memory 留指针或删除 |
 | 单次调试流水账长期保留 | 留可复用坑点到 learning；其余删除 |
 | 已被新版本取代的中间态说明 | 保留最终态；旧文档标 superseded 或删除临时记忆 |
 | README 和 docs 命令互相矛盾 | 以代码和实际可运行命令为准统一 |
@@ -35,7 +35,7 @@
 |---|---|
 | 个人偏好、跨项目协作原则 | 可留在外部全局记忆 |
 | 项目专属命令 / 红线 | 迁到 `CLAUDE.md` / `AGENTS.md`，必要时同步 `.codestable/attention.md` |
-| 项目架构 / API / 业务能力 | 迁到 `.codestable/architecture/`、requirements 或 docs |
+| 项目架构 / API / 业务能力 | 迁到 `.codestable/requirements/CONTEXT.md`、requirements 或 docs |
 | 稳定踩坑 | 迁到 `.codestable/compound/` 的 learning |
 | 长期规定 | 迁到 decision，并在 agent 入口保留一行执行规则 |
 | 事件流水账 | 删除；必要时由 git log / changelog 承担 |

@@ -4,11 +4,12 @@
 |---|---|---|
 | Root entry | `cs` | Unified entry that introduces the system and routes open-ended intents to the right `cs-*` skill |
 | Onboard | `cs-onboard` | Bring CodeStable into a new repo or one with scattered docs |
-| Requirement and architecture | `cs-req` | Curate and accumulate raw requirement docs |
-| Requirement and architecture | `cs-arch` | Draft or update architecture docs under `codestable/architecture/` |
+| Requirement and domain | `cs-req` | Curate and accumulate raw requirement docs |
+| Requirement and domain | `cs-domain` | Maintain the domain model: `.codestable/requirements/CONTEXT.md` glossary + `adrs/` decision records + single/multi-context topology |
 | Roadmap | `cs-roadmap` | Plan big work up front: high-level design, interface contracts, sub-feature breakdown |
 | Roadmap | `cs-roadmap-review` | Independent planning review gate before human roadmap approval |
 | Roadmap | `cs-roadmap-impl-goal` | Turn an approved roadmap into a runnable goal that executes impl / review / QA / accept per feature |
+| Goal-driven | `cs-goal` | Goal-driven autonomous iteration: given a start point and desired end state, iterate until accepted; artifacts land in `.codestable/goals/` |
 | Discussion entry | `cs-brainstorm` | Triage fuzzy ideas: direct design, feature brainstorm, or roadmap |
 | Feature flow | `cs-feat` | Sub-flow entry for new features |
 | Feature flow | `cs-feat-design` | Draft `{slug}-design.md` as the single input for what follows |
@@ -24,12 +25,9 @@
 | Issue flow | `cs-issue-fix` | Targeted fix, verification, and fix-note |
 | Refactor flow | `cs-refactor` | Beta main refactor flow |
 | Refactor flow | `cs-refactor-ff` | Beta light refactor lane |
-| Knowledge sink | `cs-learn` | Sink pitfalls or good practices into learning docs |
-| Knowledge sink | `cs-trick` | Curate reusable patterns or library usage as prescriptive references |
-| Knowledge sink | `cs-decide` | Record settled tech choices, architectural decisions, and long-term constraints |
+| Knowledge sink | `cs-keep` | Sink freshly found pitfalls, tricks, decisions, and research into `.codestable/compound/` as plain markdown, retrieved via grep |
 | Knowledge sink | `cs-note` | Append one-line startup notes to `.codestable/attention.md` |
-| Explore and docs | `cs-explore` | Targeted code exploration; sink “ask -> read -> conclude” into evidence |
 | Explore and docs | `cs-audit` | Audit code for bug, security, performance, maintainability, and architecture risks |
-| Explore and docs | `cs-guide` | Write outward-facing developer guides |
-| Explore and docs | `cs-libdoc` | Generate reference docs for public library surfaces |
+| Explore and docs | `cs-doc-tutorial` | Write outward-facing developer guides |
+| Explore and docs | `cs-doc-api` | Generate reference docs for public library surfaces |
 | Explore and docs | `cs-docs-neat` | Reconcile `.codestable/`, README/docs, `CLAUDE.md` / `AGENTS.md`, and agent memory at phase close |

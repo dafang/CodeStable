@@ -211,11 +211,11 @@ features:
 - `{roadmap-path}/goal-audit.md` 存在，记录最终聚合测试、roadmap 级核心验收路径、跳过项、re-verified / trust-prior 和结论
 - architecture / requirement / roadmap 回写完成
 - 最终审计通过
-- 已做 learning reflection：筛出 pitfall / knowledge 候选，并建议用户确认后再运行 `cs-learn`
+- 已做 learning reflection：筛出 pitfall / knowledge 候选，并建议用户确认后再运行 `cs-keep`
 - 已提示用户可运行 `cs-docs-neat`，同步 `.codestable/`、README/docs、`CLAUDE.md` / `AGENTS.md` 和 agent 记忆
 - transcript 打印 `CS_ROADMAP_GOAL_COMPLETE`
 
-注意：goal 会话只自动做学习点反思和候选筛选，不自动写 `.codestable/compound/`。长期知识库归档必须由用户确认后触发 `cs-learn`，按它自己的查重、提炼、review、归档流程执行。
+注意：goal 会话只自动做学习点反思和候选筛选，不自动写 `.codestable/compound/`。长期知识库归档必须由用户确认后触发 `cs-keep`，按它自己的查重、提炼、review、归档流程执行。
 
 ---
 

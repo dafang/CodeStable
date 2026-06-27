@@ -197,7 +197,7 @@ onboard 时**问 owner 是否安装**（默认建议装）：
   npm install -g @alibaba-group/open-code-review
   ```
 
-  装完提醒 owner 首次使用前要配 LLM（二选一），并用 `ocr llm test` 自检：
+  装完提醒 owner 首次使用前要配 LLM（二选一），并用 `ocr llm test` 自检。**注意：`ocr` 是独立 CLI 进程，不复用 codex / claude agent 的模型——agent 只是替它执行 `ocr review` 命令，`ocr` 自己去连配置好的 LLM backend，所以必须单独配，无法靠"已经在 agent 里"省掉**：
 
   ```bash
   ocr config set llm.url https://api.anthropic.com/v1/messages

@@ -96,12 +96,17 @@
 
 ## 7. roadmap_audit.before_complete
 
-必须运行 `goal-audit-gate`。
+必须运行：
+
+- `goal-consistency-gate`
+- `goal-audit-gate`
 
 检查：
 
 - goal-state 全部 features 为 `accepted`。
 - items.yaml 条目均为 `done` 或有理由 `dropped`。
+- 每个 feature 的 review / QA / acceptance / evidence pack / gate results / DoD contract results / DoD results 存在。
+- review / QA / acceptance 均 `status=passed`，checklist steps 全 `done`，checks 全 `passed`。
 - final aggregate commands 已重跑或有非核心 trust-prior 理由。
 - provider warnings 已解释。
 - goal-audit.md 已落盘且 `status=passed`。

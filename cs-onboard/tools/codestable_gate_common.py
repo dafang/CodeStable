@@ -168,12 +168,15 @@ def _minimal_yaml(text: str) -> Any:
 
 
 def load_yaml(path: Path) -> Any:
+    return load_yaml_text(path.read_text(encoding="utf-8"))
+
+
+def load_yaml_text(text: str) -> Any:
     try:
         import yaml  # type: ignore
     except ImportError:
-        return _minimal_yaml(path.read_text(encoding="utf-8"))
-    with path.open("r", encoding="utf-8") as handle:
-        return yaml.safe_load(handle) or {}
+        return _minimal_yaml(text)
+    return yaml.safe_load(text) or {}
 
 
 def main_exit(result: dict[str, Any], json_out: str | None = None) -> None:

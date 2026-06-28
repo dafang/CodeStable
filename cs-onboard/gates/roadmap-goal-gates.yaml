@@ -30,6 +30,8 @@ stages:
         status: protocol-only
   roadmap_audit:
     before_complete:
+      - id: goal-consistency-gate
+        mode: blocking
       - id: goal-audit-gate
         mode: blocking
         status: protocol-only

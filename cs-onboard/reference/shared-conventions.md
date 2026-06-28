@@ -12,6 +12,7 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 
 ```
 .codestable/
+├── .gitignore             忽略 CodeStable 运行期 Python 缓存等机器产物
 ├── attention.md           CodeStable 技能启动必读的项目注意事项
 ├── requirements/          能力愿景 + 领域模型 + 决策记录
 │   ├── VISION.md           能力中心索引（cs-req 维护）
@@ -67,6 +68,8 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 ├── tools/                 跨工作流共享脚本（onboard 从技能包释放）
 └── reference/             共享参考文档（onboard 从技能包释放）
 ```
+
+`.codestable/.gitignore` 由 onboard 安装，至少忽略 `**/__pycache__/` 与 `**/*.pyc`；这些是 gate / validator 运行期缓存，不属于 CodeStable 证据产物。
 
 ### 命名规则
 

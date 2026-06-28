@@ -71,15 +71,15 @@ python .codestable/tools/search-yaml.py --dir .codestable/features --filter tags
 YAML 语法校验工具。用于验证 frontmatter 语法和必填字段。
 
 ```bash
-# 校验单个文件的 YAML 语法
-python3 .codestable/tools/validate-yaml.py --file {文件路径} --yaml-only
+# 纯 YAML：checklist/items/goal-state 等逐文件校验
+python3 .codestable/tools/validate-yaml.py --file {文件路径}.yaml --yaml-only
 
-# 校验必填字段
-python3 .codestable/tools/validate-yaml.py --file {文件路径} --require doc_type --require status
-
-# 批量校验目录下所有文件
-python3 .codestable/tools/validate-yaml.py --dir {目录} --require doc_type --require status
+# Markdown frontmatter：单文件或目录校验必填字段
+python3 .codestable/tools/validate-yaml.py --file {文件路径}.md --require doc_type --require status
+python3 .codestable/tools/validate-yaml.py --dir .codestable/features --require doc_type --require status
 ```
+
+目录模式默认只校验 `.md` frontmatter；要批量校验纯 YAML 目录必须显式加 `--yaml-only`。不要对混有 checklist/items/goal-state 的目录直接加 `--require doc_type --require status`；纯 YAML 没有 Markdown frontmatter 字段，会造成假失败。
 
 ---
 
@@ -113,9 +113,11 @@ python3 .codestable/tools/validate-yaml.py --file .codestable/gates/roadmap-goal
 python3 .codestable/tools/codestable-dod-contract-gate.py --design .codestable/features/YYYY-MM-DD-{slug}/{slug}-design.md
 python3 .codestable/tools/codestable-dod-runner.py --checklist .codestable/features/YYYY-MM-DD-{slug}/{slug}-checklist.yaml
 python3 .codestable/tools/codestable-evidence-pack.py --feature {slug} --design {design} --checklist {checklist} --out {slug}-evidence-pack.md
+python3 .codestable/tools/codestable-goal-consistency-gate.py --roadmap .codestable/roadmap/{slug}
 ```
 
 `roadmap-goal-gates.yaml` 是阶段配置入口；`codestable-scope-gate.py`、`codestable-dod-runner.py` 和 `codestable-evidence-pack.py` 是 implementation.before_review 的最小 runtime。`status: protocol-only` 的 gate 只表示协议占位，由 review / QA / acceptance / audit 技能读取证据后执行，不代表已有独立脚本。
+`codestable-goal-consistency-gate.py` 是 roadmap_audit.before_complete 的 runtime，检查 goal-state、items、每个 feature 的 review/QA/acceptance/evidence/gate/DoD 产物和 checklist 状态，防止 goal-state 早于证据推进。
 
 ---
 

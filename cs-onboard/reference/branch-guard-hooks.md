@@ -18,8 +18,7 @@ meant to run before AI tool calls, and it can also install Git hook fallbacks.
   with hosts whose project-dir env var does not follow `EnterWorktree`.
 
 Git cannot stop branch switches before they happen, so command-hook enforcement
-is the primary guard. Git hooks only catch commit, merge, rebase, and push
-fallbacks.
+is the primary guard. Git hooks are only a commit-time fallback.
 
 ## Agent Hook
 
@@ -34,11 +33,11 @@ The hook reads JSON from stdin. It recognizes common `tool_name` /
 edit tools. A blocked action exits with status `2` and prints the reason to
 stderr.
 
-For shell tools, the guard blocks known Git write commands (`git add`,
-`commit`, `merge`, `push`, etc.) and branch switches. It does not parse arbitrary
-shell programs such as `python -c 'open("app.py", "a")...'`; direct file writes
-must be caught by Edit/Write tool payload paths or by the implementation review
-and worktree gates after the command.
+For shell tools, the agent hook blocks known Git write commands (`git add`,
+`commit`, `merge`, `push`, etc.) and branch switches before they run. It does
+not parse arbitrary shell programs such as `python -c 'open("app.py", "a")...'`;
+direct file writes must be caught by Edit/Write tool payload paths or by the
+implementation review and worktree gates after the command.
 
 ## Git Hook Fallback
 
@@ -51,38 +50,10 @@ python3 .codestable/tools/codestable-ai-branch-guard.py --root . --install-git-h
 Installed fallbacks:
 
 - `pre-commit`: blocks staged implementation files on `main` / `master`.
-- `pre-merge-commit`: blocks protected-branch merge commits.
-- `pre-rebase`: blocks protected-branch rebases.
-- `pre-push`: blocks protected-branch pushes.
 
+This repository no longer installs Git hooks for protected-branch merge, rebase
+or push. Publishing `main` remains an owner workflow, not a local hook gate.
 Use `--force` only when replacing an existing local hook is intentional.
-
-## Owner-Intent Main Publish
-
-Protected-branch merge and push are allowed only during a short owner-approved
-publish window. Start the window from a clean `main` checkout that matches the
-publish remote's `main`.
-
-The publish remote defaults to the **current branch's upstream remote** (so fork
-workflows work out of the box), falling back to `origin`. If your `origin` is an
-upstream mirror and you publish to a fork, pass `--remote` explicitly:
-
-```bash
-python3 .codestable/tools/codestable-main-publish.py --root . --json begin \
-  --owner-intent "owner approved publishing branch X to main" \
-  --remote <your-fork-remote> \
-  --branch feat/example
-```
-
-Then run the merge / validation / push. The guard allows `git merge`,
-merge-conflict resolution commits, and `git push` while the intent is active.
-It still blocks `git switch` / `git checkout`.
-
-Finish by removing the intent:
-
-```bash
-python3 .codestable/tools/codestable-main-publish.py --root . --json end
-```
 
 ## Recovery
 

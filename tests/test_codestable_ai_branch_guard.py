@@ -23,7 +23,6 @@ def load_tool(module_name: str, filename: str):
 guard = load_tool("codestable_ai_branch_guard", "codestable-ai-branch-guard.py")
 main_publish = load_tool("codestable_main_publish", "codestable-main-publish.py")
 
-
 def run(repo: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["git", *args],
@@ -124,59 +123,48 @@ def test_pre_commit_blocks_staged_implementation_on_main(tmp_path: Path) -> None
     assert result.paths == ("src/app.py",)
 
 
-def test_owner_intent_allows_protected_pre_push(tmp_path: Path) -> None:
+def test_git_hook_does_not_block_protected_pre_push(tmp_path: Path) -> None:
     repo = init_repo_with_remote(tmp_path)
 
-    blocked = guard.guard_git_hook(repo, "pre-push", {"main", "master"})
-    created = main_publish.begin(repo, "main", "origin", [], "owner approved release", 5)
-    allowed = guard.guard_git_hook(repo, "pre-push", {"main", "master"})
+    result = guard.guard_git_hook(repo, "pre-push", {"main", "master"})
 
-    assert created["ok"]
-    assert not blocked.ok
-    assert allowed.ok
-    assert allowed.reason == "owner_intent_main_publish"
+    assert result.ok
+    assert result.reason == "allowed"
 
 
-def test_owner_intent_allows_merge_command_but_not_switch(tmp_path: Path) -> None:
+def test_git_hooks_do_not_block_protected_merge_or_rebase(tmp_path: Path) -> None:
     repo = init_repo_with_remote(tmp_path)
-    main_publish.begin(repo, "main", "origin", [], "owner approved release", 5)
 
+    merge_result = guard.guard_git_hook(repo, "pre-merge-commit", {"main", "master"})
+    rebase_result = guard.guard_git_hook(repo, "pre-rebase", {"main", "master"})
+
+    assert merge_result.ok
+    assert rebase_result.ok
+
+
+def test_agent_hook_still_blocks_protected_merge_and_force_push(tmp_path: Path) -> None:
+    repo = init_repo_with_remote(tmp_path)
     merge_payload = {"tool_name": "Bash", "tool_input": {"command": "git merge origin/feat/demo"}}
-    switch_payload = {"tool_name": "Bash", "tool_input": {"command": "git switch feat/demo"}}
+    force_push_payload = {"tool_name": "Bash", "tool_input": {"command": "git push --force-with-lease origin main"}}
 
-    assert guard.guard_payload(merge_payload, repo, {"main", "master"}).ok
-    assert guard.guard_payload(switch_payload, repo, {"main", "master"}).reason == "branch_switch_command"
+    merge_result = guard.guard_payload(merge_payload, repo, {"main", "master"})
+    force_push_result = guard.guard_payload(force_push_payload, repo, {"main", "master"})
+
+    assert not merge_result.ok
+    assert merge_result.reason == "git_merge_on_protected_branch"
+    assert not force_push_result.ok
+    assert force_push_result.reason == "git_push_on_protected_branch"
 
 
-def test_owner_intent_does_not_allow_force_push(tmp_path: Path) -> None:
+def test_installed_git_hooks_only_include_pre_commit(tmp_path: Path) -> None:
     repo = init_repo_with_remote(tmp_path)
-    main_publish.begin(repo, "main", "origin", [], "owner approved release", 5)
-    payload = {"tool_name": "Bash", "tool_input": {"command": "git push --force-with-lease origin main"}}
+    installed = guard.install_git_hooks(repo, force=False)
 
-    result = guard.guard_payload(payload, repo, {"main", "master"})
-
-    assert not result.ok
-    assert result.reason == "git_push_on_protected_branch"
-
-
-def test_owner_intent_allows_real_hooked_merge_and_push(tmp_path: Path) -> None:
-    repo = init_repo_with_remote(tmp_path)
-    run(repo, "switch", "-c", "feat/demo")
-    (repo / "README.md").write_text("published\n", encoding="utf-8")
-    run(repo, "add", "README.md")
-    run(repo, "commit", "-m", "demo change")
-    run(repo, "push", "-u", "origin", "feat/demo")
-    run(repo, "switch", "main")
-    guard.install_git_hooks(repo, force=False)
-
-    main_publish.begin(repo, "main", "origin", ["feat/demo"], "owner approved release", 5)
-    merge = run(repo, "merge", "--no-ff", "--no-edit", "origin/feat/demo", check=False)
-    push = run(repo, "push", "origin", "main", check=False)
-    ended = main_publish.end(repo)
-
-    assert merge.returncode == 0, merge.stderr
-    assert push.returncode == 0, push.stderr
-    assert ended["removed"]
+    assert [path.name for path in installed] == ["pre-commit"]
+    assert (repo / ".git/hooks/pre-commit").exists()
+    assert not (repo / ".git/hooks/pre-push").exists()
+    assert not (repo / ".git/hooks/pre-merge-commit").exists()
+    assert not (repo / ".git/hooks/pre-rebase").exists()
 
 
 def test_allows_implementation_edit_in_linked_worktree_branch(tmp_path: Path) -> None:

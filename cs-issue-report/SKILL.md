@@ -1,13 +1,13 @@
 ---
 name: cs-issue-report
-description: issue 流程阶段 1——通过对话把问题落成可复现、可追溯的 {slug}-report.md，并判定走标准路径还是快速通道。只问现象不猜根因。触发：用户说"提个 issue"、"记录这个 bug"、"我发现一个问题"。issue 工作流的起点。
+description: Issue 报告起草。触发：提 issue/记录 bug/发现问题；只问现象，不猜根因。
 ---
 
 # cs-issue-report
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 这一阶段做两件事：把用户脑子里的问题落成结构化记录 + 判断走标准路径还是快速通道。
 

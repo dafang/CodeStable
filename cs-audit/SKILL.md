@@ -1,13 +1,13 @@
 ---
 name: cs-audit
-description: 系统审计——从代码中主动发现 bug 隐患、安全漏洞、性能问题、可维护性债务和架构偏离，产出批量发现清单。触发：用户说"审查系统"、"审计代码"、"扫描问题"、"找找 bug"、"有什么可以优化的"。
+description: 系统审计。触发：审查系统、扫描 bug/安全/性能/架构债，产出发现清单。
 ---
 
 # cs-audit
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 `cs-issue` 等你报 bug，`cs-refactor` 等你指优化点，`cs-keep` 等你说"这事记一下"——但"我也不知道哪有问题，你先扫一遍看看"这个诉求没人接。`cs-audit` 补上这块：**在用户限定的范围内主动扫描，产出一份按严重度 × 性质交叉分类的发现清单**。
 

@@ -1,6 +1,6 @@
 ---
 name: cs-note
-description: 把"短到不值得起一份文件、但 AI 每次启动 CodeStable 技能都必须知道"的项目碎片知识追加到 `.codestable/attention.md` 的固定分节里——比如编译特殊 flag、运行前要先起的服务、路径陷阱、命令别名、环境变量约定。触发：用户说"记一笔"、"加到 attention.md"、"项目要 X 才能编译"、"以后每次都得 Y"，或刚踩到一个一句话能讲清的项目特殊设置。
+description: attention 短规则追加。触发：记一笔/加到 attention/以后每次都得知道 X。
 ---
 
 # cs-note

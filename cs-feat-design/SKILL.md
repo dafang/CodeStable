@@ -1,13 +1,13 @@
 ---
 name: cs-feat-design
-description: feature 流程阶段 1——为新功能起草 {slug}-design.md 和 {slug}-checklist.yaml，先交给 cs-feat-design-review 做人审前方案审查，再由用户整体确认为 approved。触发：用户说"开始设计方案"、"写 design doc"、"准备实现 XX"，前提是已知道做什么、为谁、怎么算成功。
+description: Feature design。触发：新功能已清楚，需要起草 design/checklist。
 ---
 
 # cs-feat-design
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 这一阶段的产出是一份方案文件 `{slug}-design.md`，加上从中抽出的行动清单 `{slug}-checklist.yaml`，以及人审前的 `{slug}-design-review.md`。这些东西后面会被 implement / code review / QA / acceptance 消费，所以这里写错或写漏，下游就跟着错。
 
@@ -34,34 +34,8 @@ description: feature 流程阶段 1——为新功能起草 {slug}-design.md 和
 
 1. **和用户快速对齐两件事**——一句话需求概要 + 敲定 slug（小写字母、数字、连字符；`user-auth`、`export-csv` 这种）。日期取当天（frontmatter 用 `currentDate` 即可）。feature 目录命名是 `YYYY-MM-DD-{slug}`。
 2. **创建 `.codestable/features/{YYYY-MM-DD}-{slug}/` 目录**。
-3. **写一份空的 `{slug}-intent.md`** 作为草稿骨架，内容就是下面这段：
-
-   ```markdown
-   ---
-   doc_type: feature-intent
-   feature: {YYYY-MM-DD}-{slug}
-   status: draft
-   summary: {一句话需求，AI 按和用户对齐的结果填}
-   ---
-
-   # {slug} intent
-
-   ## 背景 / 为什么做
-
-   （一句话就够）
-
-   ## 大致怎么做
-
-   （100 字左右描述想法，含关键步骤 / 数据流）
-
-   ## 相关数据结构 / 类型
-
-   （贴相关 types、接口签名、或指向代码位置）
-
-   ## 已知不做 / 待定
-
-   （可选：明确的边界或自己也没想清楚的地方）
-   ```
+3. **写一份空的 `{slug}-intent.md`** 作为草稿骨架，模板见 `references/intent-template.md`
+   的“feature intent 草稿模板”。
 
 4. **告知用户"骨架已建好，填完后再来找我，我基于 intent 写正式 design"**，然后**本轮结束，不继续推进 design 流程**。
 
@@ -244,7 +218,7 @@ AI 默认翻车的姿势是**不思考就往眼前最顺手的文件里加**。
 
 - `passed`：才能把 design + checklist + design-review 报告交给用户整体 review。
 - `changes-requested`：按 finding 修 design/checklist，重新校验 yaml 并重跑 `cs-feat-design-review`。
-- `blocked`：补齐输入、等待 independent reviewer，或让用户明确降级 local-only 后重跑。
+- `blocked`：补齐输入、等待独立 Task agent reviewer，或让用户明确降级 local-only 后重跑。
 
 ### 6. 用户整体 review
 

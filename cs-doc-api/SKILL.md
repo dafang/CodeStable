@@ -1,13 +1,13 @@
 ---
 name: cs-doc-api
-description: 给库的公开表面（组件 / 函数 / 命令）逐条目生成参考文档，带清单追踪，支持单条目和批量。信息源是源码本身（与 doc-tutorial 任务导向不同）。触发：用户说"写 API 文档"、"组件文档"、"doc-api"，或 acceptance 后发现新增公开接口。
+description: API 参考文档。触发：写组件/函数/命令文档，或 acceptance 后新增公开接口。
 ---
 
 # cs-doc-api
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 doc-tutorial 教你"怎么用 X 做 Y"，doc-api 告诉你"X 的每个零件长什么样、怎么配"。
 
@@ -86,7 +86,7 @@ doc-api 产物**不在 `.codestable/` 下**——API 参考是面向外部读者
 
 1. **先出样板**——从清单选 2-3 个有代表性的条目（不同 category）走"读源码 → 提取 → 按模板生成"并落盘，状态先 `draft`（不直接进 current——批量模式下样板是"风格参考样本"等整体 review 一起转 current）
 2. **用户确认质量标准**——review 这 2-3 篇确认模板 / 详略 / 风格。**这步不能跳**——50 篇全白写就因为用户想要的风格不一样
-3. **批量生成**——剩余 `pending` 逐条走"读源码 → 提取 → 生成"，可用 subagent 并行；每条 `status: draft`
+3. **批量生成**——剩余 `pending` 逐条走"读源码 → 提取 → 生成"，可用 Task agent 并行；每条 `status: draft`
 4. **整体 review**——批量完成展示概况（条目数 / 跳过数 / 待确认数）；review 前先 `validate-yaml.py --dir docs/api --require doc_type --require entry --require status` 批量校验 Markdown docs（目录模式默认不扫 `manifest.yaml`）
 5. **确认落定**——用户确认后把样板和批量产出一起改 `status: current`
 

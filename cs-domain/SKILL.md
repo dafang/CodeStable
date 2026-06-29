@@ -1,11 +1,11 @@
 ---
 name: cs-domain
-description: 维护项目的领域模型（domain model）——CONTEXT.md 术语表 + ADR 决策记录 + 单/多 context 拓扑。触发：用户说"记一条决策"/"拍板了"/"加个术语"/"这个项目要分子系统了"，或 cs-brainstorm / cs-feat-design / cs-refactor 拍板时路由过来。
+description: 领域模型维护。触发：记决策、加术语、拆 context、维护 CONTEXT/ADR。
 ---
 
 # cs-domain
 
-先读 `.codestable/attention.md`；缺失提示跑 `cs-onboard`。
+先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 cs-domain 管三件事：**术语**（CONTEXT.md）、**决策**（ADR）、**拓扑**（单 context ↔ 多 context）。所有产物在 `.codestable/requirements/` 下。
 

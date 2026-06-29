@@ -1,13 +1,13 @@
 ---
 name: cs-doc-tutorial
-description: 写或更新对外指南文档——开发者指南（dev-guide）和用户指南（user-guide），产物在项目 docs/ 目录。任务导向（怎么用 X 做 Y），与 doc-api 的零件参考不同。触发：用户说"写文档"、"开发者指南"、"用户指南"，或 feature-acceptance 收尾时推送。
+description: 对外指南文档。触发：写开发者/用户指南，或 acceptance 后需要任务导向 docs。
 ---
 
 # cs-doc-tutorial
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 代码解决问题，文档让别人能用它解决问题。spec 记录"做了什么、为什么这么做"，但下游开发者和终端用户不需要、也不应该读 spec——他们需要面向自己角色的、可发布的指南。doc-tutorial 就是从 spec 和代码出发写成读者真正能用的指南。
 

@@ -1,13 +1,13 @@
 ---
 name: cs-issue-analyze
-description: issue 流程阶段 2——读 report + 读代码定位根因、评估风险，给用户 2-3 个修复方案让 TA 拍板。这一步不改代码。触发：用户说"分析这个 bug"、"找根因"、"定位问题"，且已有 {slug}-report.md。
+description: Issue 根因分析。触发：已有 report 后找根因、评估风险、给修复方案；不改代码。
 ---
 
 # cs-issue-analyze
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 用户已把问题描述清楚，你的活是**通过实际读代码找根因**——不是脑子里推断、不是在报告基础上猜。读代码是核心动作，跳过它写出来的分析没价值。
 

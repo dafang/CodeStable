@@ -10,12 +10,12 @@
 | issue | `issue-review` | `issue: YYYY-MM-DD-slug` |
 | refactor / refactor-ff | `refactor-review` | `refactor: YYYY-MM-DD-slug` |
 
-`status` / `reviewed` / `round` 各来源通用。`reviewer` 是 gate 锚点字段，按本轮实际启动的独立 reviewer 组合写：
+`status` / `reviewed` / `round` 各来源通用。`reviewer` 是 gate 锚点字段，按本轮实际启动的独立 Task agent reviewer / OCR 组合写：
 
 | 值 | 含义 |
 |---|---|
-| `subagent+ocr` | Paseo 或原生 Agent tool（独立上下文）+ ocr CLI 均已完成并合并 |
-| `subagent` | 仅独立上下文 reviewer（Paseo 或原生 Agent tool）完成 |
+| `subagent+ocr` | Task agent reviewer（Paseo subagent 或原生 Codex/Claude Task/Agent）+ ocr CLI 均已完成并合并 |
+| `subagent` | 仅 Task agent reviewer 完成 |
 | `ocr` | 仅 ocr CLI 完成 |
 | `self` | 仅主 agent 本地 review |
 
@@ -46,9 +46,9 @@ round: 1
 
 ### Independent Review
 
-- Detection: {主 agent 自检结果——Paseo create_agent / 原生 Agent / ocr CLI 各是否可用}
-- 环节 A 独立隔离 agent: {paseo|native-agent|local-only} + {not-available|pending|completed|failed|blocked|skipped-by-user}
-- 环节 B OCR CLI: not-available|completed|failed|skipped-by-user
+- Detection: {主 agent 自检结果——Paseo subagent / 原生 Codex/Claude Task/Agent / ocr CLI 各是否可用}
+- 环节 A 独立隔离 Task agent: {paseo|native-agent|local-only} + {not-available|pending|completed|failed|blocked|skipped-by-user}
+- 环节 B OCR CLI: not-available|completed|failed|skipped-scope-ambiguous|skipped-by-user
 - OCR severity mapping: High→blocking/important, Medium→nit/suggestion, Low→discarded
 - Merge policy: {各环节结果已逐条本地核验后合并 / 未启用原因 / pending 时不得定稿}
 - Gate effect: {none / blocks final verdict until started lanes complete / user-approved downgrade}
@@ -106,7 +106,7 @@ round: 1
 ## 6. Verdict
 
 - Status: passed|changes-requested|blocked
-- Next: 按「进入来源」表的通过后去向（feature→`cs-feat-qa`，其余→各自验收/提交） | 来源实现技能 review-fix | 等 independent reviewer 完成 / 用户确认降级后重跑本审查 | 补齐输入后重跑本审查
+- Next: 按「进入来源」表的通过后去向（feature→`cs-feat-qa`，其余→各自验收/提交） | 来源实现技能 review-fix | 等独立 Task agent reviewer 完成 / 用户确认降级后重跑本审查 | 补齐输入后重跑本审查
 ```
 
 没有某类 finding 时写 `none`，不要删除章节；下一轮复审要能对比。

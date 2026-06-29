@@ -1,13 +1,13 @@
 ---
 name: cs-roadmap-impl-goal
-description: CodeStable 大需求端到端 goal 编排技能。用于用户给出一个较大软件需求，并希望先用 cs-roadmap 沉淀 roadmap，经 cs-roadmap-review 通过后用户确认，再为 roadmap items 中每个子 feature 完成 cs-feat-design/checklist 和 cs-feat-design-review，经过用户确认后输出一条可直接粘贴的 /goal 指令，由 goal 会话循环逐个 feature 执行 cs-feat-impl、cs-code-review、cs-feat-qa 和 cs-feat-accept，直到整个 roadmap 验收完成。触发：用户说“做完整个 roadmap”、“把这个大需求拆完并自动推进”、“生成 goal 指令跑完整个 CodeStable roadmap”、“像 supergoal 一样规划并执行这些 features”、“一次性跑完 roadmap 里的所有 feature”等。
+description: Roadmap goal 编排。触发：完整推进大需求、执行整个 roadmap、输出 /goal 指令。
 ---
 
 # cs-roadmap-impl-goal
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 ---
 
@@ -148,7 +148,7 @@ features:
     status: pending
 ```
 
-`current_feature_index` 是 **0-based**，指向 `features` 数组中下一个要处理的元素；第一个 feature 必须是 `0`，每个 feature accepted 后加 1。展示给用户的 `Feature: N/总数` 仍使用 1-based。roadmap item 若在执行前被标 `dropped`，不要写入 `goal-state.features`；已进入 `goal-state.features` 的条目必须走到 `accepted` 或回退修复。
+`current_feature_index` 是 **0-based**，指向 `features` 数组中下一个要处理的元素；第一个 feature 必须是 `0`。每个 feature accepted 后必须 scoped-commit 且确认工作树干净，再加 1。展示给用户的 `Feature: N/总数` 仍使用 1-based。roadmap item 若在执行前被标 `dropped`，不要写入 `goal-state.features`；已进入 `goal-state.features` 的条目必须走到 `accepted` 或回退修复。
 
 ### `goal-protocol*.md`
 
@@ -197,11 +197,7 @@ features:
 
 ## 输出给用户的 goal 指令
 
-确认通过后，打印一条 fenced `/goal`，然后停止：
-
-```text
-/goal "执行 CodeStable roadmap 目录 .codestable/roadmap/{slug} 下的 goal 执行包。先读取 goal-protocol.md、goal-protocol-feature-loop.md、goal-protocol-gates.md、goal-protocol-audit.md、goal-state.yaml、goal-plan.md；这是已由用户确认 roadmap 和全部 feature design 后的 goal 模式，按 goal-plan.md 的 Gate Policy 与 goal-protocol-gates.md 的 gate 接管规则执行。按 goal-state.yaml 的 features 顺序循环处理每个 feature：读取 goal-features/{feature-slug}.md、对应 design 和 checklist，完成 cs-feat-impl，再完成 cs-code-review；如果 review 有 blocking findings，按 review-fix 修复后重跑 cs-code-review；review passed 后完成 cs-feat-qa；如果 QA failed / blocked，按 qa-fix 修复后重跑 cs-code-review 和 cs-feat-qa；QA passed 后完成 cs-feat-accept，并更新 goal-state.yaml 与 roadmap items。每个 feature 验证通过后打印 CS_ROADMAP_GOAL_FEATURE_DONE。所有 feature 完成后，按 goal-protocol-audit.md 做最终 roadmap 审计。只有当 CS_ROADMAP_GOAL_COMPLETE 出现在 transcript 中，且所有 feature 都已 review passed、QA passed 且 accept、最终审计通过、没有 CS_ROADMAP_GOAL_HANDOFF，本 goal 才算完成。"
-```
+确认通过后，读取 `references/goal-command-template.md`，替换 `{slug}`，打印一条 fenced `/goal`，然后停止。
 
 只输出指令，不替用户执行；slash command 只能由用户粘贴触发。
 
@@ -231,4 +227,4 @@ features:
 
 ## 资源
 
-写 `goal-protocol*.md` 时读取 `references/protocol.md`、`references/protocol-feature-loop.md`、`references/protocol-gates.md`、`references/protocol-audit.md`。
+写 `goal-protocol*.md` 时读取 `references/protocol.md`、`references/protocol-feature-loop.md`、`references/protocol-gates.md`、`references/protocol-audit.md`。输出 slash command 时读取 `references/goal-command-template.md`。

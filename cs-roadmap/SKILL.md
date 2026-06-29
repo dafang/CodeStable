@@ -1,13 +1,13 @@
 ---
 name: cs-roadmap
-description: 把"大到塞不进单个 feature"的需求做成完整事前规划：概设 + 接口契约 + 子 feature 拆解清单，放在 `.codestable/roadmap/{slug}/`。两种模式 new / update。触发：用户说"我想要一个 X 系统"、"帮我把这块需求拆一下"、"开一份 roadmap"，或 feature-design 阶段发现需求太大。
+description: Roadmap 规划。触发：需求大到需要拆 feature，或用户说拆需求/开 roadmap。
 ---
 
 # cs-roadmap
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 `.codestable/roadmap/` 是项目的"规划层"——每个子目录承载一块大需求，主文档由三块构成：
 
@@ -158,7 +158,7 @@ description: 把"大到塞不进单个 feature"的需求做成完整事前规划
 
 - `passed`：才能把 roadmap 交给用户 review。
 - `changes-requested`：按 finding 修 roadmap/items，重新校验并重跑 `cs-roadmap-review`。
-- `blocked`：补齐输入、等待 independent reviewer，或让用户明确降级 local-only 后重跑。
+- `blocked`：补齐输入、等待独立 Task agent reviewer，或让用户明确降级 local-only 后重跑。
 
 ### Phase 6：用户 review
 

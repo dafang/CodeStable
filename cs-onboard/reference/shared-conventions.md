@@ -36,7 +36,7 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 │       ├── {slug}-start-report.md 起点报告
 │       ├── {slug}-state.yaml     机器可读状态
 │       ├── {slug}-iteration-*.md 迭代报告
-│       └── {slug}-functional-acceptance.md 子 agent 功能验收
+│       └── {slug}-functional-acceptance.md Task agent 功能验收
 ├── features/              feature spec 聚合根
 │   └── YYYY-MM-DD-{slug}/  每个 feature 一个目录
 │       ├── {slug}-brainstorm.md  （可选，case 2 时产出）
@@ -61,9 +61,6 @@ onboard 完成后骨架（`cs-onboard` 负责搭建）：
 ├── compound/              沉淀类文档统一目录（cs-keep 产出）
 │   └── YYYY-MM-DD-{slug}.md
 │                          纯 markdown，无 frontmatter，grep 检索
-├── brainstorm/            brainstorm 阶段 spike 实验代码区（cs-brainstorm 临时产出）
-│   └── {slug}/            一次 spike 一个子目录，文件名随意
-│                          验完不强制清理，结论回写到对应 brainstorm note
 ├── gates/                 workflow gate 配置（onboard 从技能包释放）
 ├── tools/                 跨工作流共享脚本（onboard 从技能包释放）
 └── reference/             共享参考文档（onboard 从技能包释放）
@@ -270,6 +267,6 @@ feature-design / issue-analyze / issue-fix 动手前到 `.codestable/compound/` 
 
 ## 9. 执行约定与 worktree
 
-实现执行拓扑、worktree gate、code review、finish gate、context packet 和 subagent 选择拆在 `.codestable/reference/execution-conventions.md`，approval 报告口径在 `approval-conventions.md`。
+实现执行拓扑、worktree gate、code review、finish gate、context packet 和 Task agent 选择拆在 `.codestable/reference/execution-conventions.md`，approval 报告口径在 `approval-conventions.md`。
 
 - **不要让 AI 在主协调检出里 `git switch` / `git checkout`**——需要执行分支时用 git worktree；可用 `branch-guard-hooks.md` 配 command hook 硬拦在 `main`/`master` 上的直接实现。

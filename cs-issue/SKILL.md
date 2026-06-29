@@ -1,13 +1,13 @@
 ---
 name: cs-issue
-description: 修 bug 的子流程入口，把"发现问题"走到验证修复闭环，留下 report / analysis / fix-note 三份文件。触发：用户说"修 bug"、"有个问题"、"修复 XX"。只做路由，根据已有产物走 report / analyze / fix。简单问题走快速通道。
+description: Issue 流程路由。触发：修 bug/有问题/修复 XX；按状态进入 report/analyze/fix。
 ---
 
 # cs-issue
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 修 bug 直觉是"找到错的地方改了完事"，但这个直觉路径反复制造同样的麻烦：
 

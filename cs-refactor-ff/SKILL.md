@@ -1,13 +1,13 @@
 ---
 name: cs-refactor-ff
-description: refactor 流程的超轻量通道——直接识别 1-3 条低风险优化、一次确认、原地改、跑测试自证。触发：用户说"快速重构"、"小重构"、"简单优化下 XX 函数"、"别那么多步骤"，且改动在单函数 / 单组件局部、有测试可自证。
+description: 快速重构通道。触发：小重构/简单优化局部函数组件，且可测试自证。
 ---
 
 # cs-refactor-ff
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 用户说"优化一下这个函数"而改动明显很小（单函数变长、组件里抽个 composable、一段重复代码合并）时走完整三阶段太重。fastforward 让 AI 像平时一样直接改但守住底线——行为等价、引用经典方法、跑测试自证。
 

@@ -2,7 +2,7 @@
 """Gate CodeStable implementation handoffs.
 
 Implementation diffs should run in a linked worktree. Completed CodeStable
-implementation units should carry subagent code-review evidence ({slug}-review.md)
+implementation units should carry Task agent code-review evidence ({slug}-review.md)
 before the agent reports done.
 """
 
@@ -63,6 +63,7 @@ IMPLEMENTATION_SUFFIXES = (
 MAIN_CHECKOUT_OVERRIDE_ENV = "CODESTABLE_ALLOW_MAIN_CHECKOUT_IMPLEMENTATION"
 SELF_REVIEW_FALLBACK_ENV = "CODESTABLE_ALLOW_SELF_REVIEW_FALLBACK"
 UNIT_ROOTS = ("features", "issues", "refactors")
+SUBAGENT_REVIEWERS = {"subagent", "subagent+ocr"}
 
 
 @dataclass(frozen=True)
@@ -195,7 +196,7 @@ def find_touched_units(changed: list[ChangedFile]) -> set[Path]:
 def review_has_subagent_evidence(path: Path) -> bool:
     for line in path.read_text(encoding="utf-8").splitlines():
         key, sep, value = line.partition(":")
-        if sep and key.strip().lower() == "reviewer" and value.strip().lower() == "subagent":
+        if sep and key.strip().lower() == "reviewer" and value.strip().lower() in SUBAGENT_REVIEWERS:
             return True
     return False
 
@@ -247,8 +248,8 @@ def validate(root: Path) -> tuple[bool, list[Finding], dict[str, object]]:
                 Finding(
                     severity="P1",
                     message=(
-                        "CodeStable implementation review must use a subagent reviewer. "
-                        f"Set {SELF_REVIEW_FALLBACK_ENV}=1 only when the platform has no subagent capability."
+                        "CodeStable implementation review must use a Task agent reviewer. "
+                        f"Set {SELF_REVIEW_FALLBACK_ENV}=1 only when the platform has no Task agent capability."
                     ),
                     path=path,
                 )

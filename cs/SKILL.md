@@ -1,13 +1,13 @@
 ---
 name: cs
-description: CodeStable 工作流根入口，介绍体系全貌并把诉求路由到对应 cs-* 子技能。触发：用户只输入 `cs`、说"介绍一下 codestable"、"该用哪个技能"、"不知道用哪个"，或诉求还很开放未收敛。本技能只做路由不做事。
+description: CodeStable 路由入口。触发：用户只说 cs/该用哪个 skill/介绍体系，或诉求未收敛。
 ---
 
 # cs
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 `cs` 是 CodeStable 工作流家族的统一入口。用户开口大概率不会指名某个 `cs-xxx`——可能只说"我想加个权限校验"、"这个地方有 bug"、"介绍下 codestable"，甚至只发一个 `cs`。本技能负责接住开放式输入，弄清意图，路由到对的子技能。
 
@@ -41,7 +41,7 @@ CodeStable 把开发活动建模成 **8 个实体 + 4 个流程**，所有产物
 .codestable/
 ├── requirements/    需求 + 领域模型（VISION + capability + CONTEXT.md + adrs/）
 ├── roadmap/         规划层（roadmap / roadmap-review / goal 执行包）
-├── goals/           目标实体（限定起点/终点，自主迭代 + subagent 功能验收）
+├── goals/           目标实体（限定起点/终点，自主迭代 + Task agent 功能验收）
 ├── features/        新增能力 spec 聚合根（design / design-review / impl / review / qa / accept）
 ├── issues/          修 bug spec 聚合根（report / analyze / fix）
 ├── refactors/       重构 spec 聚合根（beta）
@@ -52,7 +52,7 @@ CodeStable 把开发活动建模成 **8 个实体 + 4 个流程**，所有产物
 **四条流程**：
 
 - **新增能力**：`cs-feat-design` → `cs-feat-design-review` → `cs-feat-impl` → `cs-code-review` → `cs-feat-qa` → `cs-feat-accept`（想法模糊先 `cs-brainstorm` 分诊）
-- **目标达成**：`cs-goal`（限定起点/终点 → interview/grill 写起点报告 → 自主实现/验证/迭代 → 完成前 subagent 功能验收）
+- **目标达成**：`cs-goal`（限定起点/终点 → interview/grill 写起点报告 → 自主实现/验证/迭代 → 完成前 Task agent 功能验收）
 - **修 bug**：`cs-issue-report` → `cs-issue-analyze` → `cs-issue-fix`
 - **重构**（beta）：`cs-refactor` / `cs-refactor-ff`
 
@@ -96,7 +96,7 @@ L2/L3 需 owner 审批/选择/授权/接受风险时，子流程先按 `.codesta
 | 用户说什么 / 想做什么 | 路由到 |
 |---|---|
 | 仓库还没有 `.codestable/` | **先 `cs-onboard`**——所有其他 cs-* 都依赖这个目录 |
-| 限定起点和终点 / 明确验收结果 / "帮我达成这个 goal" / "自主迭代直到完成" / "grill me 后开干" | `cs-goal`（起点 / iteration 报告；实现由 AI 自主推进；完成前 subagent 功能验收） |
+| 限定起点和终点 / 明确验收结果 / "帮我达成这个 goal" / "自主迭代直到完成" / "grill me 后开干" | `cs-goal`（起点 / iteration 报告；实现由 AI 自主推进；完成前 Task agent 功能验收） |
 | 想法还模糊 / "有想法没想清楚" / "先聊聊" / "不知道是不是新功能" | `cs-brainstorm`（分诊后路由到 design / feature-brainstorm 落盘 / roadmap） |
 | 新功能 / "加个 X" / "实现 XX" | `cs-feat`（路由 design / ff / impl / accept） |
 | BUG / 异常 / 报错 / "这里不对" / "文档错了" | `cs-issue`（路由 report / analyze / fix） |
@@ -124,7 +124,7 @@ L2/L3 需 owner 审批/选择/授权/接受风险时，子流程先按 `.codesta
 | Route | Default context | Escalate when |
 |---|---|---|
 | `cs-onboard` | L2/L4 | 旧文档需要 inventory、迁移或 trusted/stale 分类 |
-| `cs-goal` | L1/L2 | 缺验收/起点状态需 grill + 起点报告；完成需 subagent 功能验收；spec/公开契约变更或反复 blocker → owner-stop |
+| `cs-goal` | L1/L2 | 缺验收/起点状态需 grill + 起点报告；完成需 Task agent 功能验收；spec/公开契约变更或反复 blocker → owner-stop |
 | `cs-brainstorm` | L1→L2 | owner 接受某方向或要下一步可执行项 |
 | `cs-roadmap` / `cs-roadmap-review` / `cs-roadmap-impl-goal` | L2/L3 | roadmap 牵涉 spec 变更、capability boundary 或 requirement delta |
 | `cs-feat` | L1 | 阶段不明或用户须选 design / ff / impl / accept |

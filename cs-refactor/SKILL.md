@@ -1,13 +1,13 @@
 ---
 name: cs-refactor
-description: 代码优化的子流程入口，处理"行为不变、结构变"的工作（结构 / 性能 / 可读性），按 scan → design → apply 分步执行每步人工放行。触发：用户说"优化一下 / 重构 / 重写 / 拆一下 / 性能不行 / 代码太长"且不夹带行为改动。不处理新需求 / bug / 跨模块架构重划。
+description: 受控重构入口。触发：优化/重构/拆分/性能/代码太长，且不改变行为、不新增需求。
 ---
 
 # cs-refactor
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 AI 自己重构有两个稳定失败模式：一是不知道模块真实需求和约束，改出来的东西功能不等价；二是一次吞掉的范围超过上下文承载，改到后面忘了前面的约束。这流程在"想优化"和"动手改"之间塞了扫描清单 + 方法库，让 AI 只接自己能稳定做对的活。
 

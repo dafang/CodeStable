@@ -1,13 +1,13 @@
 ---
 name: cs-req
-description: 维护 `.codestable/requirements/` 下的能力愿景文档。三种模式 draft / backfill / update。触发：design 阶段起草愿景、acceptance 阶段落档，或用户说"刷新 requirements"、"补一份 req"、"先把愿景写下来"。
+description: 能力愿景维护。触发：起草/回填/更新 requirements，或 design/acceptance 需要 req delta。
 ---
 
 # cs-req
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 `.codestable/requirements/` 是项目的"能力清单"——每份描述**一个能力因什么问题而产生、怎么解决、边界在哪**，写成人话非技术读者也能看懂。架构文档讲"怎么搭"，需求文档讲"为什么要有"。
 

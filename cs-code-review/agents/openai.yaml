@@ -1,4 +1,4 @@
 interface:
   display_name: "CodeStable Feature Review"
-  short_description: "本地 feature 代码审查，可选独立 agent 辅助"
-  default_prompt: "使用 $cs-code-review 对已实现的 feature 做本地代码审查，并输出 review 报告。"
+  short_description: "实现后 code review gate"
+  default_prompt: "使用 $cs-code-review 审查本轮实现 diff；按 Task agent 选择规则启动独立 Task agent reviewer，并输出 review 报告。"

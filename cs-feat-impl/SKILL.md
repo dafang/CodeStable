@@ -1,13 +1,13 @@
 ---
 name: cs-feat-impl
-description: feature 流程阶段 2——按 {slug}-checklist.yaml 里 design 切好的 paradigm 维度 steps 推进，每步具体改哪个文件由 implement 自决，写完用统一格式汇报；也处理 cs-code-review 返回的 review-fix 和 cs-feat-qa 返回的 qa-fix。触发：用户说"方案确认了开始实现"、"按方案写代码"、"开工"、"修 review blocking"、"修 QA 失败项"。前提是 design 已 approved 且有 checklist。遇到方案外情况要回方案谈不要硬冲。
+description: Feature 实现。触发：approved design/checklist 后开工，或修 review/QA blocking。
 ---
 
 # cs-feat-impl
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 到这一步用户已经在方案上签过字了，你的活是把方案变成代码。容易出问题的不是写代码本身，而是**实现路上发现方案没覆盖到的情况时怎么办**——硬冲下去就把方案当摆设了。下面整套规则就是为了让"停下来"成为默认动作。
 

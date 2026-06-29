@@ -57,6 +57,7 @@ IMPLEMENTATION_SUFFIXES = (
 
 UNIT_ROOTS = ("features", "issues", "refactors")
 IMPLEMENTATION_UNIT_ROOTS = frozenset(UNIT_ROOTS)
+SUBAGENT_REVIEWERS = {"subagent", "subagent+ocr"}
 KNOWN_SKILL_DIRS = {
     "browser-bridge",
     "codestable-maintainer",
@@ -352,7 +353,7 @@ def review_has_subagent_evidence(path: Path) -> bool:
         return False
     for line in path.read_text(encoding="utf-8").splitlines():
         key, sep, value = line.partition(":")
-        if sep and key.strip().lower() == "reviewer" and value.strip().lower() == "subagent":
+        if sep and key.strip().lower() == "reviewer" and value.strip().lower() in SUBAGENT_REVIEWERS:
             return True
     return False
 
@@ -376,7 +377,7 @@ def missing_review_findings(root: Path, units: list[Path]) -> list[Finding]:
             findings.append(
                 Finding(
                     severity="P1",
-                    message="CodeStable implementation review must use a subagent reviewer.",
+                    message="CodeStable implementation review must use a Task agent reviewer.",
                     path=review_path.as_posix(),
                 )
             )

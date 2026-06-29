@@ -1,13 +1,13 @@
 ---
 name: cs-feat
-description: 新功能开发的子流程入口，把"加个 X 能力"从想法走到验收闭环。触发：用户说"做新功能"、"加个 X"、"实现 XX"。只做路由，根据已有产物决定走 brainstorm / design / design-review / fastforward / implement / code-review / QA / acceptance。不处理 bug。
+description: Feature 路由入口。触发：新功能/加 X/实现 XX，按状态进入 design/impl/review/QA/accept。
 ---
 
 # cs-feat
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 新功能流程在"需求"和"代码"之间塞了一份方案文件，让两边有交接点——AI 直接拿到需求就写代码会出三个老问题：名字跟原代码对不上、改着改着改出范围、改完不留存档。
 
@@ -49,7 +49,7 @@ brainstorm 是讨论层独立入口，会分诊：case 1（清楚 → 直接 des
 |---|---|---|---|
 | 0 brainstorm（可选，独立入口） | `cs-brainstorm` | case 2 时产出 brainstorm note | AI 思考伙伴，用户拍板 |
 | 1 方案设计 | `cs-feat-design` | design.md + checklist.yaml | AI 起草候选方案 |
-| 1.5 方案审查 | `cs-feat-design-review` | design-review.md | 独立 agent / AI 人审前审查 |
+| 1.5 方案审查 | `cs-feat-design-review` | design-review.md | Task agent / AI 人审前审查 |
 | 2 分步实现 | `cs-feat-impl` | 代码 + 阶段汇报 | AI 按方案执行 |
 | 2.5 代码审查 | `cs-code-review` | review.md | AI 只读审查，用户决定是否修 |
 | 2.6 QA 验证 | `cs-feat-qa` | qa.md | AI 运行证据，用户确认风险 |

@@ -1,13 +1,13 @@
 ---
 name: cs-docs-neat
-description: CodeStable 文档与知识库收尾整理技能。用于阶段结束、里程碑完成、准备交接/提交、用户说"整理文档"、"同步记忆"、"更新 AGENTS/CLAUDE"、"收尾"、"这个阶段做完了"、"新人能直接上手"、"docs 过期/冲突了"、"sync up"、"tidy up docs"、"update memory"、"/sync"、"/neat"时，对 `.codestable/`、项目根 `CLAUDE.md` / `AGENTS.md`、README、docs/ 和可用 agent 记忆做全局盘点、反膨胀、补漏和冲突修正。
+description: CodeStable 文档收尾。触发：阶段结束、整理文档、同步记忆、/sync、/neat。
 ---
 
 # cs-docs-neat
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 你是**知识库编辑**，不是记录员。记录员只会追加；编辑要审查全局、合并重复、修正过期、删除废弃，把稳定知识放到正确受众层。目标是让下一位人类、下一次 agent、下游项目都不会被旧文档误导。
 

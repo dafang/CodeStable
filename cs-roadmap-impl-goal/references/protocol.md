@@ -28,7 +28,7 @@
 仍必须 handoff 的情况：
 
 - 需要改变已批准 design、roadmap item、接口契约或 feature 范围。
-- 独立 reviewer pending / failed / blocked，且没有用户明确降级。
+- 独立 Task agent reviewer pending / failed / blocked，且没有用户明确降级。
 - 同一失败项三轮修复仍不通过。
 - 外部凭证或环境缺失导致核心行为无法判断。
 - 功能性核心路径或 roadmap 级核心验收路径无法验证。
@@ -51,7 +51,7 @@ Protocol: {roadmap-path}/goal-protocol.md
 2. 读取对应 `goal-features/<feature-slug>.md`、design、checklist。
 3. 按 `goal-protocol-feature-loop.md` 执行 feature loop。
 4. 每个阶段按 `goal-protocol-gates.md` 执行 Gate Policy。
-5. 每个 feature accepted 后更新 `goal-state.yaml` 和 roadmap items。
+5. 每个 feature accepted 后更新 `goal-state.yaml` 和 roadmap items，立即 scoped-commit；`git status --short` 干净后才进入下一 feature。
 6. 所有 feature accepted 后按 `goal-protocol-audit.md` 做最终审计。
 
 ## 6. 完成标记

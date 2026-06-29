@@ -1,13 +1,13 @@
 ---
 name: cs-issue-fix
-description: issue 流程阶段 3——按已确认根因和方案定点修复、验证、写 {slug}-fix-note.md 落档。两个入口：标准路径从 analyze 来，快速通道从 report 直接来。触发：用户说"开始修 bug"、"按分析修"、"动手改代码"。只动方案声明的文件，不顺手优化。
+description: Issue 定点修复。触发：按根因方案修 bug、动手改代码；只动方案声明范围。
 ---
 
 # cs-issue-fix
 
 ## 启动必读
 
-开始任何判断或动作前，先读取 `.codestable/attention.md`；缺失则视为骨架不完整，提示先补齐或运行 `cs-onboard`，不要回退到外部 AI 入口文件。
+开始任何判断或动作前，先执行 CodeStable preflight：读 `.codestable/attention.md`；缺失先 `cs-onboard`；不读外部 AI 入口替代（详见 `.codestable/reference/execution-conventions.md`）。
 
 根因和方案已经确定（标准路径在 analysis、快速通道在 report 阶段口头确认过），你的活是按方案改代码、验证效果、写下修复记录。
 

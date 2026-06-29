@@ -120,14 +120,15 @@ which ocr && ocr llm test
 ocr review --audience agent --background "{feature slug / 目标 / 本次改动范围}"
 ```
 
-**审查范围必须限定到本 feature 的人写代码改动**。`ocr review` 默认 workspace 模式会把 staged + unstaged + **untracked** 全审一遍；untracked 里可能有本轮新增源码，也可能有 `.codestable/` goal 执行包、点目录产物、缓存等非范围文件。策略是遵循 `.gitignore` 并按本轮范围归因，而不是一律排除 untracked。两道控制：
+**审查范围必须限定到本 feature 的人写代码改动**。`ocr review` 默认 workspace 模式会把 staged + unstaged + **untracked** 全审一遍；Roadmap 多 feature 连续执行时，旧 feature 的 untracked 产物会累积，裸 workspace OCR 会越扫越大。三道控制：
 
-1. **调用时限定范围**：本 feature 改动已提交到执行分支时，优先用 ref 范围 `ocr review --audience agent --from {feature-base} --to HEAD`，审已提交 diff；若本轮仍有未提交改动（含新增文件），必须先用 `git status --short` 判断这些文件是否属于本轮，再用默认 workspace 模式或补充本地审查覆盖它们。
-2. **结果过滤（兜底，必做）**：合并 OCR finding 前，**丢弃**命中以下路径的 finding，无论 OCR 是否扫到——
+1. **先固定本轮 scope**：优先从 scope-gate / evidence pack 的 `changed_files`、`{feature-base}..HEAD`、实现汇报拿本轮文件清单。无法区分本轮与历史 dirty/untracked 时，OCR 记 `skipped-scope-ambiguous`，不跑裸 workspace 全量。
+2. **调用时限定范围**：本轮改动已提交时，用 `ocr review --audience agent --from {feature-base} --to HEAD`；只有工作树从干净基线开始、`git status --short` 里的所有 staged/unstaged/untracked 都属于本轮 scope，才允许裸 workspace 模式。
+3. **结果过滤（兜底，必做）**：合并 OCR finding 前，**丢弃**命中以下路径的 finding，无论 OCR 是否扫到——
    - `.codestable/`（CodeStable 自己的 spec / 工具产物，永远不是行级代码审查对象）
    - 任何 `.` 开头的目录（`.git/`、`.claude/`、`.venv/` 等）
    - `.gitignore` 命中的文件（`git check-ignore <path>` 为真）
-   未被 `.gitignore` 忽略、且能归因到本轮目标的 untracked 新增文件必须保留并 review。
+   未被 `.gitignore` 忽略、且能归因到本轮 scope 的 untracked 新增文件必须 review；若 OCR 无法只审它们，改成本地行级审查并在报告记录 OCR 跳过原因。
 
 OCR 的 High / Medium / Low 映射到 cs-code-review 严重度后合并：
 

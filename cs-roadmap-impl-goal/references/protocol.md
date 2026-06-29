@@ -51,7 +51,7 @@ Protocol: {roadmap-path}/goal-protocol.md
 2. 读取对应 `goal-features/<feature-slug>.md`、design、checklist。
 3. 按 `goal-protocol-feature-loop.md` 执行 feature loop。
 4. 每个阶段按 `goal-protocol-gates.md` 执行 Gate Policy。
-5. 每个 feature accepted 后更新 `goal-state.yaml` 和 roadmap items。
+5. 每个 feature accepted 后更新 `goal-state.yaml` 和 roadmap items，并立即 scoped-commit 本 feature；下一轮 feature 必须从干净工作树开始。
 6. 所有 feature accepted 后按 `goal-protocol-audit.md` 做最终审计。
 
 ## 6. 完成标记

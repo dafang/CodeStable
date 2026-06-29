@@ -81,6 +81,6 @@ Evidence required: <证据列表>
 全部通过后：
 
 - 当前 feature 状态改为 `accepted`。
-- 立即按 scoped-commit 规则提交本 feature 的代码、spec、review、QA、acceptance、roadmap 回写和 goal-state 更新；commit 后工作树必须只剩下一轮显式允许的 baseline/机器产物。
+- 立即 scoped-commit 本 feature 的代码、spec、review、QA、acceptance、roadmap 回写和 goal-state 更新；commit 成功且 `git status --short` 干净后，才能进入下一条。
 - `current_feature_index` 加 1。
 - 打印 `CS_ROADMAP_GOAL_FEATURE_DONE`。

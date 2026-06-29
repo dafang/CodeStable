@@ -148,7 +148,7 @@ features:
     status: pending
 ```
 
-`current_feature_index` 是 **0-based**，指向 `features` 数组中下一个要处理的元素；第一个 feature 必须是 `0`，每个 feature accepted 后 scoped-commit，再加 1。展示给用户的 `Feature: N/总数` 仍使用 1-based。roadmap item 若在执行前被标 `dropped`，不要写入 `goal-state.features`；已进入 `goal-state.features` 的条目必须走到 `accepted` 或回退修复。
+`current_feature_index` 是 **0-based**，指向 `features` 数组中下一个要处理的元素；第一个 feature 必须是 `0`。每个 feature accepted 后必须 scoped-commit 且确认工作树干净，再加 1。展示给用户的 `Feature: N/总数` 仍使用 1-based。roadmap item 若在执行前被标 `dropped`，不要写入 `goal-state.features`；已进入 `goal-state.features` 的条目必须走到 `accepted` 或回退修复。
 
 ### `goal-protocol*.md`
 

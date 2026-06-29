@@ -201,28 +201,43 @@ Get-ChildItem .codestable\tools -Recurse -Filter *.pyc | Remove-Item -Force
 
 `cs-code-review` 的审查分两环节：独立隔离 agent review（必需）+ OCR 行级扫描（增强）。OCR 用的是 [open-code-review](https://github.com/alibaba/open-code-review) 的 `ocr` CLI——装上后 `cs-code-review` 会自动检测并调用，没装则自然降级，不阻塞。
 
-onboard 时**问 owner 是否安装**（默认建议装）：
+### 1. 安装：先检测，已装就别重装
 
-- **同意** → 全局安装：
+```bash
+which ocr   # 已经有路径 → 跳过安装，直接进第 2 步
+```
 
-  ```bash
-  npm install -g @alibaba-group/open-code-review
-  ```
+只有 `which ocr` 找不到时，才**问 owner 是否安装**（默认建议装），同意后全局装：
 
-  装完提醒 owner 首次使用前要配 LLM（二选一），并用 `ocr llm test` 自检。**注意：`ocr` 是独立 CLI 进程，不复用 codex / claude agent 的模型——agent 只是替它执行 `ocr review` 命令，`ocr` 自己去连配置好的 LLM backend，所以必须单独配，无法靠"已经在 agent 里"省掉**：
+```bash
+npm install -g @alibaba-group/open-code-review
+```
 
-  ```bash
-  ocr config set llm.url https://api.anthropic.com/v1/messages
-  ocr config set llm.auth_token <api-key>
-  ocr config set llm.model claude-opus-4-8
-  ocr config set llm.use_anthropic true
-  ```
+> 全局安装是 owner 环境改动（需联网），必须先确认再装，不自动执行。owner 拒绝 → 不装，`cs-code-review` 检测不到会记 `not-available` 并继续。
 
-  绝不替 owner 编造 / 硬编码 API key——只给命令模板，由 owner 自己填。
+### 2. 配置 LLM：用 provider 体系，别用旧 `llm.*` 块
 
-- **拒绝 / 跳过** → 不装。`cs-code-review` 检测不到 `ocr` 会记 `not-available` 并继续，owner 日后可随时手动 `npm install -g @alibaba-group/open-code-review` 补上。
+> ⚠️ **最容易踩的坑**：ocr v1.x 用的是 **`provider` / `providers` 体系**。网上 / 旧文档教的 `ocr config set llm.url ...`（`llm.*` 块）在新版**不生效**——配了也会被忽略，`ocr` 仍按默认 provider 连官方端点，表现为 `ocr llm test` 卡住超时（`context deadline exceeded`）。
 
-> 这是 owner 全局环境的改动（需联网、装全局 npm 包），所以必须先确认再装，不自动执行。
+`ocr` 是**独立 CLI 进程**，不复用 codex / claude agent 的模型——agent 只是替它执行 `ocr review` 命令，`ocr` 自己去连配置好的 LLM backend，必须单独配。
+
+内置 provider 列表用 `ocr llm providers` 查。配置（以 anthropic 兼容网关为例）：
+
+```bash
+ocr config set provider anthropic
+ocr config set providers.anthropic.url <网关 base-url>   # 不含 /v1/messages，ocr 按协议自动拼
+ocr config set providers.anthropic.api_key <api-key>
+ocr config set model <model>                             # 如 claude-opus-4-8
+ocr llm test                                             # 必须看到 ✓ Connection test successful
+```
+
+- 字段名是 **`url`** 不是 `base_url`；anthropic 协议下 ocr 会自动拼 `/v1/messages`。
+- OpenAI 兼容网关同理：`ocr config set provider <name>`（用 openai 协议的内置 provider 或自定义）+ `providers.<name>.url` + `.api_key`。
+- 绝不替 owner 编造 / 硬编码 API key——只给命令模板，由 owner 自己填。
+
+### 3. 收尾自检
+
+跑 `python3 .codestable/tools/codestable-doctor.py --root .`，输出末尾 `OCR tool:` 行会报 `configured` / `unconfigured` / `misconfigured` / `not-installed`，并对错配（如残留旧 `llm.*` 块、provider 缺失）给出精确修复指引。doctor 只做静态体检、不发网络请求，连通性仍以 `ocr llm test` 为准。
 
 ---
 
@@ -233,7 +248,7 @@ onboard 时**问 owner 是否安装**（默认建议装）：
 - [ ] `.codestable/attention.md` 已建
 - [ ] `.codestable/gates/`、`.codestable/tools/`、`.codestable/reference/`、`.codestable/hooks/` 已从技能包复制
 - [ ] 已告知 owner 分支保护 hook 是可选项及如何接入 / 关闭
-- [ ] 已询问 owner 是否安装 open-code-review（`ocr`）；同意则已全局安装并提示配 LLM，拒绝则记录跳过
+- [ ] 已 `which ocr` 检测：已装则跳过安装、确认配置为 provider 体系（非旧 `llm.*` 块）；未装则询问 owner 是否安装并记录结果
 - [ ] 迁移路径：每条映射都有明确处理结果（迁移 / 保留原位）
 - [ ] 迁移路径：没有未经确认就移动的文件
 - [ ] 验收汇报已给出

@@ -128,7 +128,7 @@ OCR 的 High / Medium / Low 映射到 cs-code-review 严重度后合并：
 | Medium | `nit` 或 `suggestion` |
 | Low | 丢弃（视为噪音），不进入报告 |
 
-OCR 不做 spec-fit 判断；mapping 后的 finding 必须经主 agent 本地事实核验才能升级为 `blocking`。`ocr` 未安装 / `ocr llm test` 失败 → 记 `not-available`，提示用户可在 onboard 或手动 `npm install -g @alibaba-group/open-code-review` 安装；不阻塞本轮。
+OCR 不做 spec-fit 判断；mapping 后的 finding 必须经主 agent 本地事实核验才能升级为 `blocking`。`ocr` 未安装 / `ocr llm test` 失败 → 记 `not-available`，提示用户走 `cs-onboard` 的 open-code-review 段安装并配置；不阻塞本轮。注意 `ocr llm test` 超时（`context deadline exceeded`）多半是配置用了旧 `llm.*` 块——ocr v1.x 需用 `provider`/`providers` 体系，详见 onboard 段或 `codestable-doctor.py` 的 OCR 体检。
 
 ---
 

@@ -26,6 +26,14 @@ Evidence required: <证据列表>
 
 ## 2. 实现阶段
 
+必须显式使用 `$cs-feat-impl` 执行；禁止仅凭本协议摘要替代对应 skill。开始写代码前先打印：
+
+```text
+CS_STAGE_START feature=<feature-slug> stage=impl skill=cs-feat-impl
+```
+
+如果不能加载 `$cs-feat-impl`，必须停下说明原因，不得降级为普通实现。
+
 按 `cs-feat-impl` 执行：
 
 - 先做基线预检。

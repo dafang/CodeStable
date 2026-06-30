@@ -17,6 +17,8 @@ description: Roadmap 规划。触发：需求大到需要拆 feature，或用户
 
 三块**一起**作为这块大需求所有子 feature 的共同约束——每条子 feature 进 `cs-feat-design` 时，roadmap 第 2 块的接口契约就是它的**硬约束输入**（不能违反，要改先回 roadmap update）。
 
+当 roadmap 涉及跨模块 module interface、seam、adapter 或依赖替身策略时，按 `references/codebase-design.md` 做内嵌 deep-module 检查；这不是切换到独立 `codebase-design` skill。
+
 **为什么 roadmap 不直接写 ADR**：ADR（`requirements/adrs/`）记的是"已经拍板的稳定结构性决策"，roadmap 记的是"还没落地、可能还会变"的前瞻性接口契约。等子 feature 真正落地、对应接口稳定后，由 `cs-feat-accept` 盘点出来的领域影响触发 `cs-domain` 写 ADR——roadmap 完成过渡使命后归档。
 
 **为什么单独一层**：requirements 记"要什么 + 怎么定义术语 + 拍板了哪些决策"（愿景 + 领域），roadmap 记"怎么分步实现"（执行）。把执行规划塞进 requirements 会把"要什么"和"打算怎么实现"混起来。
@@ -111,7 +113,7 @@ description: Roadmap 规划。触发：需求大到需要拆 feature，或用户
 **拆解纪律**：
 
 0. **先做架构方案再拆 feature**——顺序：先想模块拆分（概设第 3 节）→ 模块间接口 / 数据结构 / 协议（详设第 4 节）→ 才把方案分解成子 feature（第 5 节）。**架构方案不清楚就硬拆 feature，结果是每个 feature 各自重新发明轮子、接口对不齐**
-1. **接口契约要写到 feature 可拿来当硬约束的程度**——函数签名 / 数据结构 / 协议字段 / 错误码这一级。讲不到这级回去想。无跨模块接口（如纯前端样式调整）就明确写"无跨模块接口"
+1. **接口契约要写到 feature 可拿来当硬约束的程度**——函数签名 / 数据结构 / 协议字段 / 错误码这一级，并说明 seam placement、dependency strategy 和 adapter 是否真实需要。讲不到这级回去想。无跨模块接口（如纯前端样式调整）就明确写"无跨模块接口"
 2. **每条子 feature 能当独立 feature 流程跑完并独立验证**——能单独写 design / 实现 / 验收，完成后能拿出明确证据（命令、测试、截图、接口响应、文档归并）。跑不下来颗粒度不对
 3. **依赖图必须是 DAG**——A 依赖 B 写清楚，别循环
 4. **依赖关系要有具体理由**——"B 依赖 A，因为 A 提供 XX 表结构"而不是"A 先做"
@@ -146,6 +148,7 @@ description: Roadmap 规划。触发：需求大到需要拆 feature，或用户
 16. **交付物自查**：每条做完后是否能从仓库事实看到产物，而不是只从汇报看到？
 17. **知识回写自查**：哪些规则或坑会影响后续 feature？是否放进观察项，等 acceptance 验证后触发对应沉淀流程？
 18. **Goal Coverage 自查**：每个 goal / completion signal 是否已映射到 item、验证入口和 evidence type？核心目标不能只靠模糊描述或后续再说。
+19. **Interface depth 自查**：跨模块接口是否 deep；是否有 pass-through module、假 seam 或单 adapter 间接层？
 
 ### Phase 5：候选落盘 + 独立 review gate
 
@@ -223,6 +226,7 @@ feature-design 发现接口契约不合理 / 漏了 / 描述不准 → **回 `cs
 - [ ] 主文档含：背景 / 范围与明确不做 / **模块拆分** / **接口契约** / 子 feature 清单 / 排期 / 观察项
 - [ ] 模块拆分节每个模块职责一句话讲清
 - [ ] 接口契约节写到 feature-design 可拿来当硬约束的级别（函数签名 / 数据结构 / 协议字段 / 错误码）或明确"无跨模块接口"
+- [ ] 涉及跨模块 interface / seam / adapter 时，已记录 depth / locality / dependency strategy 和 adapter 结论
 - [ ] items.yaml 每条有 `slug` / `description` / `depends_on` / `status` / `feature`
 - [ ] 依赖图是 DAG 无循环
 - [ ] 最小闭环条目已标
@@ -259,6 +263,7 @@ feature-design 发现接口契约不合理 / 漏了 / 描述不准 → **回 `cs
 
 - **跳过架构方案直接拆任务**——上来就列子 feature，模块边界 / 接口没想，feature-design 各自发明轮子
 - **接口契约写得含糊**——"两边商量"、"待定"、"用一个统一的事件总线"——讲不到字段 / 签名 / 协议级。feature-design 接到这种没法当硬约束
+- 制造 pass-through module 或只有一个 adapter 的假 seam——看似解耦，实际只是多一层同步成本
 - 把单 feature 内部细节写进 roadmap（某模块内部怎么分文件 / 用哪个库）——归 feature-design
 - 颗粒度失衡——一条装得下三个独立功能、另一条只改个配置
 - 依赖关系靠脑补——讲不清为什么依赖

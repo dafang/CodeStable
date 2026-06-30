@@ -68,6 +68,7 @@ related_architecture: []    # 相关 architecture doc slug，可空
 - **职责**：{一两句讲清做什么、不做什么}
 - **承载的子 feature**：{slug-1, slug-2}
 - **触碰的现有代码 / 模块**：{已有的 X 模块 / 全新 / 重写某模块}
+- **Depth 判断**：{deep / shallow 风险 / pass-through；复杂度会藏在本 module 里，还是散到 callers}
 
 ### 模块 B / C · ...
 
@@ -104,6 +105,13 @@ payload: { user_id: str, role: str, changed_at: ISO8601 }
 - 调用方必须先确保 user_id 已认证
 - response 的 reason 在 allowed=true 时必须为 null
 - 事件必须幂等消费
+
+**Interface 设计检查**：
+- Module / interface：{哪个 module 暴露这个 interface；caller 必须知道哪些 invariant / ordering / error mode}
+- Seam placement：{seam 放在哪里；为什么 caller 和测试都应穿过这里}
+- Depth / locality：{interface 如何给 caller leverage；哪些变化会集中在 implementation 内}
+- Dependency strategy：{in-process / local-substitutable / remote-owned / true external}
+- Adapter：{无 / production + test adapters；若只有一个 adapter，说明为什么不是假 seam}
 
 ### 4.2 ...
 
@@ -216,6 +224,7 @@ python .codestable/tools/validate-yaml.py --file .codestable/roadmap/{slug}/{slu
 
 - [ ] 模块拆分讲清了？每个模块职责一句话？边界讲得清（哪些事这模块做、哪些不做）？
 - [ ] 接口契约写到函数签名 / 数据结构 / 协议字段 / 错误码这一级了？feature-design 看完不需要回来问就能直接照着实现？
+- [ ] 跨模块 interface 是否 deep？seam placement、dependency category、adapter 策略是否写清？
 - [ ] 共享数据结构 / 持久化 / 全局状态列齐了？
 - [ ] 没有跨模块接口的话第 4 节明确写"无跨模块接口"了？而不是空着 / "待定"？
 
@@ -239,15 +248,16 @@ python .codestable/tools/validate-yaml.py --file .codestable/roadmap/{slug}/{slu
 > **架构方案层**
 > 1. 模块拆分对吗？边界划得合理？有该合并 / 该拆开的？
 > 2. 接口契约定得够具体吗？feature-design 拿着能直接照做？还是有"两边商量"的含糊地带？
-> 3. 共享数据结构 / 协议字段 / 错误码有遗漏？
+> 3. Interface 是否 deep？seam 放得对吗？adapter 是否真实需要？
+> 4. 共享数据结构 / 协议字段 / 错误码有遗漏？
 >
 > **feature 拆解层**
-> 4. 拆解粒度合适？每条都能独立做成 feature？
-> 5. 每条落在哪个模块标对了？
-> 6. 依赖关系对吗？有漏的前置或多余依赖？
-> 7. 最小闭环选得对？第一条做完真能端到端演示点什么？
-> 8. "明确不做"有遗漏？
-> 9. 排期顺序符合你的产品优先级？
+> 5. 拆解粒度合适？每条都能独立做成 feature？
+> 6. 每条落在哪个模块标对了？
+> 7. 依赖关系对吗？有漏的前置或多余依赖？
+> 8. 最小闭环选得对？第一条做完真能端到端演示点什么？
+> 9. "明确不做"有遗漏？
+> 10. 排期顺序符合你的产品优先级？
 >
 > 有修改意见直接说，确认后把 roadmap 从 `draft` 标为 `active`。
 

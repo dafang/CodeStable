@@ -76,7 +76,7 @@ description: Feature design review gate。触发：人审前审 design/checklist
 - design 引用到的关键代码、接口、类型、组件、命令入口
 
 按 cs-feat-design-review 的严重度语义输出：blocking / important / nit / suggestion / learning / praise / residual-risk。
-重点审查：需求边界、术语冲突、名词层现状→变化、编排层流程、挂载点可卸载性、结构健康度、验收契约、steps 原子性、checks 来源、基线与验证命令、交付物、清洁度、roadmap 接口契约遵守情况。
+重点审查：需求边界、术语冲突、名词层现状→变化、module interface depth / seam / adapter、编排层流程、挂载点可卸载性、结构健康度、验收契约、steps 原子性、checks 来源、基线与验证命令、交付物、清洁度、roadmap 接口契约遵守情况。
 每条 finding 必须有 design/checklist/doc/code 事实证据、影响、建议修复边界。
 不要写 {slug}-design-review.md；只把审查结果回传给主 agent。
 ```
@@ -112,6 +112,7 @@ description: Feature design review gate。触发：人审前审 design/checklist
 - 需求边界：用户目标、核心行为、成功标准、明确不做是否可核对。
 - 术语与现状：关键术语是否与代码 / 架构 / 历史 feature 冲突；现状描述是否真实。
 - 名词层：值对象、实体、接口、类型、组件 props/events 是否讲清变化。
+- Module/interface 设计：interface 是否包含 caller 必须知道的 invariant / ordering / error mode；module 是否 deep；seam / adapter 是否真实需要；测试是否能通过 interface 观察行为。
 - 编排层：主流程图、分支、错误语义、幂等、并发、可观测点是否能跑通。
 - 挂载点：是否列了真实对外注册点，而不是内部改动文件清单。
 - 结构健康度：微重构是否必要且边界安全；目录 convention 候选是否合理。
@@ -135,6 +136,7 @@ description: Feature design review gate。触发：人审前审 design/checklist
 - checklist steps 独立可验证，checks 能回到 design 来源。
 - roadmap 起头的 design 没有绕开 roadmap 接口契约。
 - DoD Contract 覆盖 Design / Implementation / Review / QA / Acceptance DoD、Validation Commands 和 Required Artifacts。
+- Module/interface design 覆盖 depth、seam placement、dependency strategy；没有新增 / 改动 interface 时可标 not-applicable。
 - checklist `dod.commands` 若存在，字段使用 `{id, command, core, failure_handling}`；design 表格只是人读投影。
 - 核心检查若只有 `H` 证据，不能静默 `passed`；至少写入 residual risk，必要时列 important / blocking finding。
 
@@ -240,6 +242,7 @@ round: 1
 | DoD Contract | pass|warn|fail | E|C|H | {依据} | {复核点} |
 | Steps and checks traceability | pass|warn|fail | E|C|H | {依据} | {复核点} |
 | Roadmap contract compliance | pass|warn|fail | E|C|H | {依据} | {复核点} |
+| Module interface design | pass|warn|fail|n/a | E|C|H | {依据} | {复核点} |
 | Validation and artifacts | pass|warn|fail | E|C|H | {依据} | {复核点} |
 
 Summary: E={n}, C={n}, H={n}, H-only core checks={列表或 none}。
